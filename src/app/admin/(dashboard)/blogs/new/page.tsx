@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { blogSchema, type BlogInput } from '@/lib/validations';
-import { slugify } from '@/lib/utils';
+import { slugify, toImageArray } from '@/lib/utils';
 import { Input } from '@/components/ui/Input';
 import { Textarea } from '@/components/ui/Textarea';
 import { Button } from '@/components/ui/Button';
@@ -106,9 +106,7 @@ export default function NewBlogPage() {
               {watch('featuredImage') ? (
                 <div className="space-y-2">
                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                    {(typeof watch('featuredImage') === 'string'
-                      ? [watch('featuredImage')]
-                      : watch('featuredImage')
+                    {(toImageArray(watch('featuredImage'))
                     ).map((url: string, index: number) => (
                       <div key={index} className="relative border-2 border-gray-300 rounded-lg overflow-hidden bg-gray-50 group">
                         <img
@@ -119,9 +117,7 @@ export default function NewBlogPage() {
                         <button
                           type="button"
                           onClick={() => {
-                            const currentImages = typeof watch('featuredImage') === 'string'
-                              ? [watch('featuredImage')]
-                              : watch('featuredImage');
+                            const currentImages = toImageArray(watch('featuredImage'));
                             const newImages = currentImages.filter((_: string, i: number) => i !== index);
                             setValue('featuredImage', newImages.length === 0 ? '' : (newImages.length === 1 ? newImages[0] : newImages));
                           }}

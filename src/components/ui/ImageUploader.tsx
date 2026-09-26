@@ -121,7 +121,8 @@ export default function ImageUploader({ value, onChange, label, error }: ImageUp
 
       {showMediaLibrary && (
         <MediaLibrary
-          onSelect={(url) => onChange(url)}
+          multiple={false}
+          onSelect={(url) => onChange(Array.isArray(url) ? url[0] ?? '' : url)}
           onClose={() => setShowMediaLibrary(false)}
         />
       )}

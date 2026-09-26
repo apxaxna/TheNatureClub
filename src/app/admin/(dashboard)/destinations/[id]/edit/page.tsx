@@ -14,6 +14,7 @@ import { StringArrayInput } from '@/components/admin/StringArrayInput';
 import { Trash2 } from 'lucide-react';
 import RichTextEditor from '@/components/RichTextEditor';
 import MediaLibrary from '@/components/MediaLibrary';
+import { toImageArray } from '@/lib/utils';
 
 export default function EditDestinationPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
@@ -220,9 +221,7 @@ export default function EditDestinationPage({ params }: { params: Promise<{ id: 
               {watch('featuredImage') ? (
                 <div className="space-y-2">
                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                    {(typeof watch('featuredImage') === 'string'
-                      ? [watch('featuredImage')]
-                      : watch('featuredImage')
+                    {(toImageArray(watch('featuredImage'))
                     ).map((url: string, index: number) => (
                       <div key={index} className="relative border-2 border-gray-300 rounded-lg overflow-hidden bg-gray-50 group">
                         <img
@@ -233,9 +232,7 @@ export default function EditDestinationPage({ params }: { params: Promise<{ id: 
                         <button
                           type="button"
                           onClick={() => {
-                            const currentImages = typeof watch('featuredImage') === 'string'
-                              ? [watch('featuredImage')]
-                              : watch('featuredImage');
+                            const currentImages = toImageArray(watch('featuredImage'));
                             const newImages = currentImages.filter((_: string, i: number) => i !== index);
                             setValue('featuredImage', newImages.length === 0 ? '' : (newImages.length === 1 ? newImages[0] : newImages));
                           }}
