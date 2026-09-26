@@ -29,3 +29,8 @@ export function formatPrice(price: number): string {
     currency: 'USD',
   }).format(price);
 }
+
+export function toImageArray(value: string | string[] | undefined): string[] {
+  if (!value) return [];
+  return typeof value === 'string' ? [value] : value;
+}
