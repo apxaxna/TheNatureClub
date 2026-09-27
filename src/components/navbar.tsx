@@ -33,7 +33,7 @@ export const Navbar = () => {
                         className="cursor-pointer ml-2 sm:ml-4 mr-auto md:m-0 md:absolute md:left-1/2 md:-translate-x-1/2 w-20 h-20 sm:w-24 sm:h-24 md:w-36 md:h-36 object-contain transition-all duration-300"
                     />
 
-                    <Button className="cursor-pointer px-4 py-2 text-xs sm:px-5 sm:py-2.5 sm:text-sm md:p-6 md:text-base font-medium rounded-full bg-[#1A1111] hover:bg-[#695050]">
+                    <Button className="cursor-pointer px-4 py-2 text-xs sm:px-5 sm:py-2.5 sm:text-sm md:p-6 md:text-base font-medium rounded-full bg-white text-black hover:bg-[#d4d4d4]">
                         Book a trip
                     </Button>
                 </div>

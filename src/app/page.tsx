@@ -14,6 +14,8 @@ import {
   Calendar,
 } from "lucide-react";
 import { TextAnimate } from "@/components/ui/text-animate";
+import { ProgressiveBlur } from "@/components/ui/progressive-blur";
+import { Carousel, type CarouselItem } from "@/components/carousel";
 
 const commandGroups: CommandMenuGroupDef[] = [
   {
@@ -37,11 +39,44 @@ const commandGroups: CommandMenuGroupDef[] = [
   },
 ];
 
+const discoverItems: CarouselItem[] = [
+  {
+    id: "1",
+    title: "Winter Exhibit",
+    image: "/images/winter.jpg",
+    href: "#",
+  },
+  {
+    id: "2",
+    title: "Autumn Wilderness",
+    image: "/images/autumn.jpg",
+    href: "#",
+  },
+  {
+    id: "3",
+    title: "Mountain Expedition",
+    image: "/images/mountain.jpg",
+    href: "#",
+  },
+  {
+    id: "4",
+    title: "Wildlife Safari",
+    image: "/images/wildlife.jpg",
+    href: "#",
+  },
+  {
+    id: "5",
+    title: "Lakes & Waterfalls",
+    image: "/images/lakes.jpg",
+    href: "#",
+  },
+];
+
 const page = () => {
   return (
     <main className="min-h-svh w-full">
       {/* hero */}
-      <section className="relative min-h-svh w-full">
+      <section id="hero" className="relative min-h-svh w-full">
         <Image
           src={"/images/hero.jpg"}
           alt="hero-page"
@@ -49,7 +84,7 @@ const page = () => {
           priority
           className="object-cover object-center"
         />
-        
+
         {/* Centered Title & Command Menu */}
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-6 px-4 text-center">
           <TextAnimate animation="blurIn" as="h1" className="text-white text-2xl sm:text-3xl md:text-4xl font-normal drop-shadow-md">
@@ -73,6 +108,22 @@ const page = () => {
 
       {/*Navbar*/}
       <Navbar />
+
+      {/*Discovery*/}
+      <section id="discover" className="min-h-svh w-full">
+        <div className="h-full w-full flex px-4 sm:px-8 py-6 sm:py-8 lg:py-10">
+          <div className="w-full h-full flex flex-col gap-3 sm:gap-4">
+            <TextAnimate animation="slideLeft" by="character" as="h1" className="text-black text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight drop-shadow-sm">
+              DISCOVER
+            </TextAnimate>
+            <TextAnimate animation="slideLeft" by="word" as="p" className="text-sm sm:text-base text-neutral-600 max-w-full lg:whitespace-nowrap break-normal">
+              Find tours from our curated selection based on seasons, animals, landscapes and more
+            </TextAnimate>
+            <Carousel items={discoverItems} />
+          </div>
+        </div>
+      </section>
+      <ProgressiveBlur height="50%" position="bottom" />
     </main>
   );
 };
