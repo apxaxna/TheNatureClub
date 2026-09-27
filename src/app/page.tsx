@@ -13,6 +13,7 @@ import {
   Phone,
   Calendar,
 } from "lucide-react";
+import { TextAnimate } from "@/components/ui/text-animate";
 
 const commandGroups: CommandMenuGroupDef[] = [
   {
@@ -51,9 +52,9 @@ const page = () => {
         
         {/* Centered Title & Command Menu */}
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-6 px-4 text-center">
-          <h1 className="text-white text-2xl sm:text-3xl md:text-4xl font-normal drop-shadow-md">
+          <TextAnimate animation="blurIn" as="h1" className="text-white text-2xl sm:text-3xl md:text-4xl font-normal drop-shadow-md">
             Pack Your Bags. Chase the World.
-          </h1>
+          </TextAnimate>
 
           <div className="w-full max-w-sm sm:max-w-md">
             <CommandMenu
