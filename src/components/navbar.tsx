@@ -1,31 +1,48 @@
 "use client";
+import { useState } from "react";
 import { ListIcon } from "@phosphor-icons/react";
 import Image from "next/image";
+import { Button } from "./ui/button";
+import { SidebarMenu } from "./sidebar-menu";
 
 export const Navbar = () => {
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
     return (
-        <nav className="absolute top-0 left-0 z-20 w-full px-8 -my-12">
-            <div className="mx-auto flex max-w-full items-center justify-between">
-                <div className="flex items-center gap-8 text-white">
-                    <ListIcon size={32} className="cursor-pointer" />
-                    <a href="#" className="font-semibold">DESTINATIONS</a>
-                    <a href="#" className="font-semibold">BLOGS</a>
+        <>
+            <nav className="absolute -top-2 sm:top-0 md:top-0 left-0 z-20 w-full px-4 sm:px-8 my-4 md:-my-6">
+                <div className="mx-auto flex max-w-full items-center justify-between">
+                    <div className="flex items-center gap-3 sm:gap-8 text-white">
+                        <button
+                            type="button"
+                            onClick={() => setIsSidebarOpen(true)}
+                            aria-label="Open navigation menu"
+                            className="flex cursor-pointer items-center justify-center rounded-md p-1 transition-all duration-150 hover:opacity-80 active:scale-95"
+                        >
+                            <ListIcon className="size-7 sm:size-8" />
+                        </button>
+                        <a href="#" className="hidden md:block font-semibold">DESTINATIONS</a>
+                        <a href="#" className="hidden md:block font-semibold">BLOGS</a>
+                    </div>
 
+                    <Image
+                        src={"/images/logo.png"}
+                        alt="logo"
+                        width={150}
+                        height={150}
+                        className="cursor-pointer ml-2 sm:ml-4 mr-auto md:ml-auto w-20 h-20 sm:w-24 sm:h-24 md:w-36 md:h-36 object-contain transition-all duration-300"
+                    />
 
+                    <Button className="cursor-pointer px-4 py-2 text-xs sm:px-5 sm:py-2.5 sm:text-sm md:p-6 md:text-base font-medium rounded-full">
+                        Book a trip
+                    </Button>
                 </div>
+            </nav>
 
-                <Image 
-                    src={"/images/logo.png"} 
-                    alt="logo" 
-                    width={150} 
-                    height={150} 
-                    className="cursor-pointer" 
-                />
-
-                <button className="rounded-full bg-white px-6 py-3 text-black hover:bg-slate-200 transition-all cursor-pointer">
-                    Book a Trip
-                </button>
-            </div>
-        </nav>
+            <SidebarMenu
+                isOpen={isSidebarOpen}
+                onClose={() => setIsSidebarOpen(false)}
+            />
+        </>
     );
 };
