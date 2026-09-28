@@ -18,6 +18,7 @@ import { ProgressiveBlur } from "@/components/ui/progressive-blur";
 import { Carousel, type CarouselItem } from "@/components/carousel";
 import { DestinationCarousel } from "@/components/destination-cards";
 import { ContactCard } from "@/components/contact-card";
+import { Footer } from "@/components/footer";
 
 
 const commandGroups: CommandMenuGroupDef[] = [
@@ -150,7 +151,7 @@ const page = () => {
         </div>
       </section>
       {/*Footer / Contact Section*/}
-      <footer
+      <section
         id="contact"
         className="relative min-h-svh w-full flex flex-col items-center justify-start pt-14 sm:pt-20 md:pt-24 pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden"
       >
@@ -184,7 +185,10 @@ const page = () => {
 
         {/* Contact Form Card */}
         <ContactCard />
-      </footer>
+
+        {/*actual footer */}
+        <Footer/>
+      </section>
 
 
       <ProgressiveBlur height="50%" position="bottom" />
