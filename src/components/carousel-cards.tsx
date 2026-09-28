@@ -14,8 +14,8 @@ export const CarouselCard = ({
   href,
 }: CarouselCardProps) => {
   const cardBody = (
-    <div className="group/card relative w-[180px] sm:w-[280px] md:w-[300px] lg:w-[340px] 2xl:w-[380px] shrink-0 select-none cursor-pointer transition-all duration-300 ease-out hover:-translate-y-1.5 active:scale-[0.98]">
-      <div className="relative h-[250px] sm:h-[380px] md:h-[400px] lg:h-[460px] 2xl:h-[500px] w-full overflow-hidden rounded-xl sm:rounded-2xl bg-neutral-100 shadow-sm transition-all duration-300 ease-out group-hover/card:shadow-xl group-hover/card:shadow-black/10">
+    <div className="group/card relative w-45 sm:w-70 md:w-75 lg:w-85 2xl:w-95 shrink-0 select-none cursor-pointer transition-all duration-300 ease-out hover:-translate-y-1.5 active:scale-[0.98]">
+      <div className="relative h-62.5 sm:h-95 md:h-100 lg:h-115 2xl:h-125 w-full overflow-hidden rounded-xl sm:rounded-2xl bg-neutral-100 shadow-sm transition-all duration-300 ease-out group-hover/card:shadow-xl group-hover/card:shadow-black/10">
         <Image
           src={image}
           alt={title}
@@ -24,7 +24,7 @@ export const CarouselCard = ({
           className="object-cover object-center transition-transform duration-700 ease-out group-hover/card:scale-105"
         />
         {/* Subtle bottom vignette to ground the image */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t bg-linear-to-t from-black/40 via-transparent to-transparent opacity-60 transition-opacity duration-300 group-hover/card:opacity-80" />
+        <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent opacity-60 transition-opacity duration-300 group-hover/card:opacity-80" />
       </div>
 
       <div className="flex w-full items-center justify-between gap-1.5 px-1 pt-2 sm:px-1.5 sm:pt-3">
