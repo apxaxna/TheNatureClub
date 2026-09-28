@@ -25,6 +25,7 @@
     "@unlumen-ui": "https://ui.unlumen.com/r/{name}.json",
     "@magicui": "https://magicui.design/r/{name}",
     "@componentry": "https://componentry.fun/r/{name}.json",
-    "@react-bits": "https://reactbits.dev/r/{name}.json"
+    "@react-bits": "https://reactbits.dev/r/{name}.json",
+    "@efferd": "https://efferd.com/r/{name}.json"
   }
 }

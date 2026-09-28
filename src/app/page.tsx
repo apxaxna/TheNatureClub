@@ -1,6 +1,5 @@
 "use client";
 
-import { Navbar } from "@/components/navbar";
 import { CommandMenu, type CommandMenuGroupDef } from "@/components/ui/command-menu";
 import Image from "next/image";
 import {
@@ -110,8 +109,6 @@ const page = () => {
         </div>
       </section>
 
-      {/*Navbar*/}
-      <Navbar />
 
       {/*Discovery*/}
       <section id="discover" className="min-h-svh w-full">
@@ -132,7 +129,7 @@ const page = () => {
       <section id="why-us" className="min-h-svh w-full">
         <div className="w-full h-full flex flex-col px-4 sm:px-8 py-6 sm:py-8 lg:py-10">
           <TextAnimate animation="slideLeft" by="character" as="h1" className="text-black text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight drop-shadow-sm">
-            WHY US?
+            ABOUT US
           </TextAnimate>
         </div>
       </section>
@@ -150,6 +147,7 @@ const page = () => {
           </div>
         </div>
       </section>
+      <ProgressiveBlur height="50%" position="bottom" />
       {/*Footer / Contact Section*/}
       <section
         id="contact"
@@ -191,7 +189,7 @@ const page = () => {
       </section>
 
 
-      <ProgressiveBlur height="50%" position="bottom" />
+      
     </main>
   );
 };
