@@ -16,6 +16,7 @@ import {
 import { TextAnimate } from "@/components/ui/text-animate";
 import { ProgressiveBlur } from "@/components/ui/progressive-blur";
 import { Carousel, type CarouselItem } from "@/components/carousel";
+import { DestinationCarousel } from "@/components/destination-cards";
 
 const commandGroups: CommandMenuGroupDef[] = [
   {
@@ -134,10 +135,16 @@ const page = () => {
       </section>
       {/*Destinations*/}
       <section id="destinations" className="min-h-svh w-full">
-        <div className="w-full h-full flex flex-col px-4 sm:px-8 py-6 sm:py-8 lg:py-10">
-          <TextAnimate animation="slideLeft" by="character" as="h1" className="text-black text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight drop-shadow-sm">
-            DESTINATIONS
-          </TextAnimate>
+        <div className="h-full w-full flex px-4 sm:px-8 py-6 sm:py-8 lg:py-10">
+          <div className="w-full h-full flex flex-col gap-3 sm:gap-4">
+            <TextAnimate animation="slideLeft" by="character" as="h1" className="text-black text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight drop-shadow-sm">
+              DESTINATIONS
+            </TextAnimate>
+            <TextAnimate animation="slideLeft" by="word" as="p" className="text-sm sm:text-base text-neutral-600 max-w-full lg:whitespace-nowrap break-normal">
+              Explore our most popular tours with breath taking experience.
+            </TextAnimate>
+            <DestinationCarousel />
+          </div>
         </div>
       </section>
 
