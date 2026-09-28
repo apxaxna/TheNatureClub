@@ -17,6 +17,8 @@ import { TextAnimate } from "@/components/ui/text-animate";
 import { ProgressiveBlur } from "@/components/ui/progressive-blur";
 import { Carousel, type CarouselItem } from "@/components/carousel";
 import { DestinationCarousel } from "@/components/destination-cards";
+import { ContactCard } from "@/components/contact-card";
+
 
 const commandGroups: CommandMenuGroupDef[] = [
   {
@@ -147,6 +149,42 @@ const page = () => {
           </div>
         </div>
       </section>
+      {/*Footer / Contact Section*/}
+      <footer
+        id="contact"
+        className="relative min-h-svh w-full flex flex-col items-center justify-start pt-14 sm:pt-20 md:pt-24 pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden"
+      >
+        <Image
+          src={"/images/footer.jpg"}
+          alt="footer-page"
+          fill
+          priority
+          className="object-cover object-center"
+          style={{
+            maskImage: "linear-gradient(to bottom, transparent 0%, black 20%)",
+            WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 20%)",
+          }}
+        />
+
+        {/* Top Transparent Fade */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-0 h-44 sm:h-64 z-10 bg-linear-to-b from-background via-background/60 to-transparent"
+        />
+
+        {/* Gradient Overlay: #6A7F1A */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 z-10"
+          style={{
+            background:
+              "linear-gradient(to top, #6A7F1A 0%, #6A7F1A 35%, rgba(106, 127, 26, 0) 100%)",
+          }}
+        />
+
+        {/* Contact Form Card */}
+        <ContactCard />
+      </footer>
 
 
       <ProgressiveBlur height="50%" position="bottom" />
