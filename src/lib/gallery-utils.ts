@@ -56,7 +56,9 @@ export function parseAspectRatioString(ratioStr?: string): number | null {
 }
 
 export function normalizeSanityGalleryItems(rawItems: SanityGalleryRawItem[]): GalleryItem[] {
-
+  if (!rawItems || !Array.isArray(rawItems)) {
+    return [];
+  }
 
   const items: GalleryItem[] = [];
 

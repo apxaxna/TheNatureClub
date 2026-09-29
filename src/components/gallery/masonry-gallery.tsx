@@ -123,36 +123,47 @@ export function MasonryGallery({ initialSanityItems = [] }: MasonryGalleryProps)
             </TextAnimate>
           </div>
 
-          {/* Pinterest Multi-Column Masonry Grid */}
-          <div className="flex w-full flex-row gap-3 sm:gap-4 md:gap-5 items-start">
-            {columns.map((colItems, colIndex) => (
-              <div
-                key={`col-${colIndex}`}
-                className="flex flex-1 flex-col gap-3 sm:gap-4 md:gap-5 min-w-0"
-              >
-                {colItems.map((item) => (
-                  <GalleryCard
-                    key={item.instanceId}
-                    item={item}
-                    onOpenLightbox={setActiveLightboxItem}
-                  />
+          {baseItems.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-24 text-center">
+              <p className="text-white/60 text-sm">No gallery items uploaded yet.</p>
+              <p className="text-white/30 text-xs mt-1">
+                Upload photos or videos in Sanity Studio to see them appear here.
+              </p>
+            </div>
+          ) : (
+            <>
+              {/* Pinterest Multi-Column Masonry Grid */}
+              <div className="flex w-full flex-row gap-3 sm:gap-4 md:gap-5 items-start">
+                {columns.map((colItems, colIndex) => (
+                  <div
+                    key={`col-${colIndex}`}
+                    className="flex flex-1 flex-col gap-3 sm:gap-4 md:gap-5 min-w-0"
+                  >
+                    {colItems.map((item) => (
+                      <GalleryCard
+                        key={item.instanceId}
+                        item={item}
+                        onOpenLightbox={setActiveLightboxItem}
+                      />
+                    ))}
+                  </div>
                 ))}
               </div>
-            ))}
-          </div>
 
-          {/* Infinite Scroll Sentinel */}
-          <div
-            ref={sentinelRef}
-            className="mt-12 flex h-24 w-full items-center justify-center text-white/40"
-          >
-            {isLoadingMore && (
-              <div className="flex items-center gap-2 text-xs font-medium tracking-wider uppercase text-white/50">
-                <span className="size-2 animate-ping rounded-full bg-amber-400" />
-                <span>Loading more moments…</span>
+              {/* Infinite Scroll Sentinel */}
+              <div
+                ref={sentinelRef}
+                className="mt-12 flex h-24 w-full items-center justify-center text-white/40"
+              >
+                {isLoadingMore && (
+                  <div className="flex items-center gap-2 text-xs font-medium tracking-wider uppercase text-white/50">
+                    <span className="size-2 animate-ping rounded-full bg-amber-400" />
+                    <span>Loading more moments…</span>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
+            </>
+          )}
         </div>
       </section>
 
