@@ -21,8 +21,8 @@ export const Navbar = () => {
                         >
                             <ListIcon className="size-7 sm:size-8" />
                         </button>
-                        <a href="#" className="hidden md:block font-semibold">DESTINATIONS</a>
-                        <a href="#" className="hidden md:block font-semibold">BLOGS</a>
+                        <a href="#destinations" className="hidden md:block font-semibold">DESTINATIONS</a>
+                        <a href="/blogs" className="hidden md:block font-semibold">BLOGS</a>
                     </div>
 
                     <Image
