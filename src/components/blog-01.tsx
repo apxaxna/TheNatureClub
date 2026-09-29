@@ -17,18 +17,12 @@ export default function Blog01({
     initialArticles.slice(0, 6)
   )
 
+  const hasMore = displayedArticles.length < initialArticles.length
+
   const handleLoadMore = () => {
     setDisplayedArticles((prev) => {
       const currentLength = prev.length
-      if (currentLength < initialArticles.length) {
-        return initialArticles.slice(0, currentLength + 6)
-      }
-      // If we've shown all base articles, cycle through and generate new items with unique IDs
-      const nextBatch: Article[] = initialArticles.slice(0, 6).map((article, idx) => ({
-        ...article,
-        id: `${currentLength + idx + 1}`,
-      }))
-      return [...prev, ...nextBatch]
+      return initialArticles.slice(0, currentLength + 6)
     })
   }
 
@@ -50,16 +44,18 @@ export default function Blog01({
         ))}
       </div>
 
-      <div className="flex justify-center">
-        <Button
-          type="button"
-          onClick={handleLoadMore}
-          className="gap-2 pr-2.5 pl-3 cursor-pointer"
-        >
-          Load More
-          <ArrowRightIcon />
-        </Button>
-      </div>
+      {hasMore && (
+        <div className="flex justify-center">
+          <Button
+            type="button"
+            onClick={handleLoadMore}
+            className="gap-2 pr-2.5 pl-3 cursor-pointer"
+          >
+            Load More
+            <ArrowRightIcon />
+          </Button>
+        </div>
+      )}
     </div>
   )
 }

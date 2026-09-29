@@ -26,7 +26,7 @@ export const Navbar = () => {
                     </div>
 
                     <Image
-                        src={"/images/logo.png"}
+                        src={"https://cdn.sanity.io/images/gnfni9vb/production/3023c21884fe24c0b12286009ee20eedb9ffb337-3375x4219.png"}
                         alt="logo"
                         width={150}
                         height={150}

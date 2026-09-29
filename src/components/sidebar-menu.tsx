@@ -93,7 +93,7 @@ export const SidebarMenu = ({ isOpen, onClose }: SidebarMenuProps) => {
               {/* Logo: Left on mobile (order-1), Right on desktop (order-2) */}
               <div className="order-1 md:order-2 relative">
                 <Image
-                  src="/images/logo.png"
+                  src="https://cdn.sanity.io/images/gnfni9vb/production/3023c21884fe24c0b12286009ee20eedb9ffb337-3375x4219.png"
                   alt="The Nature Club"
                   width={150}
                   height={150}
