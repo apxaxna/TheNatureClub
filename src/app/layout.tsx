@@ -11,6 +11,7 @@ const montserrat = Montserrat({
 
 export const metadata: Metadata = {
   title: "The Nature Club",
+  description: "The Nature Club",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
