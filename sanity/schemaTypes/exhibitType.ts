@@ -63,7 +63,9 @@ export const exhibitType = defineType({
               title: 'Image',
               type: 'image',
               options: { hotspot: true },
-              validation: (rule) => rule.required(),
+              description: 'Until a photo is uploaded, the site shows a placeholder in this slot.',
+              validation: (rule) =>
+                rule.required().warning('No photo yet — the site shows a placeholder until you upload one'),
             }),
             defineField({
               name: 'title',

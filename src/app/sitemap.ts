@@ -14,7 +14,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "weekly",
       priority: 1,
       // Placeholder exhibit photos aren't ours, so they're not advertised to search engines.
-      images: exhibits.filter((e) => !e.placeholder).flatMap((e) => e.photos.map((p) => p.imageUrl)),
+      images: exhibits.flatMap((e) => e.photos.filter((p) => !p.placeholder).map((p) => p.imageUrl)),
     },
     { url: absoluteUrl("/destinations"), changeFrequency: "monthly", priority: 0.9 },
     { url: absoluteUrl("/blogs"), changeFrequency: "weekly", priority: 0.8 },

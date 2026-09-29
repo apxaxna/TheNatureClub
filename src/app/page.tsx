@@ -28,7 +28,10 @@ export default async function HomePage() {
   ]);
 
   // Each exhibit is a photo series by the club (placeholder photos are left out).
-  const exhibitsJsonLd = exhibits.filter((e) => !e.placeholder).map((exhibit) => ({
+  const exhibitsJsonLd = exhibits
+    .map((exhibit) => ({ ...exhibit, photos: exhibit.photos.filter((p) => !p.placeholder) }))
+    .filter((exhibit) => exhibit.photos.length > 0)
+    .map((exhibit) => ({
     "@type": "ImageGallery",
     "@id": absoluteUrl(`/#${exhibit.slug}`),
     name: exhibit.title,

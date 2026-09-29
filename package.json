@@ -6,10 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
-    "seed": "tsx scripts/seed.ts",
-    "create-admin": "node --env-file=.env.local scripts/create-admin.js",
-    "reset-admin": "node --env-file=.env.local scripts/reset-admin-password.js"
+    "lint": "eslint"
   },
   "dependencies": {
     "@base-ui/react": "^1.8.0",

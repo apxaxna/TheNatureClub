@@ -9,6 +9,8 @@ export type ExhibitPhoto = {
   location?: string
   wide?: boolean
   imageUrl: string
+  /** True while no photo has been uploaded and a random placeholder is shown instead. */
+  placeholder?: boolean
 }
 
 export type Exhibit = {
@@ -18,15 +20,13 @@ export type Exhibit = {
   season?: string
   description?: string
   photos: ExhibitPhoto[]
-  /** True for the built-in fallback content, whose photos are random placeholders. */
-  placeholder?: boolean
 }
 
 // Placeholder photo until the real one is uploaded in Sanity.
 const placeholder = (seed: string) => `https://picsum.photos/seed/tnc-${seed}/1600/1200`
 
-// The three seasonal exhibits from thenatureclub.in, used until exhibits are added in Sanity.
-const FALLBACK_EXHIBITS: Exhibit[] = [
+// The three seasonal exhibits from thenatureclub.in, shown if Sanity has no exhibits.
+const EXHIBIT_TEMPLATES: Exhibit[] = [
   {
     id: "winter",
     slug: "the-winter-exhibit",
@@ -137,17 +137,22 @@ export async function getExhibits(): Promise<Exhibit[]> {
         ...exhibit,
         id: _id,
         photos: photos
-          .filter((p) => p.imageUrl)
+          .filter((p) => p.title)
           .map(({ _key, imageUrl, ...photo }) => ({
             ...photo,
             id: _key,
             alt: photo.alt || photo.title,
-            imageUrl: imageUrl!,
+            // Slots without an upload yet keep a placeholder so the layout stays intact.
+            imageUrl: imageUrl || placeholder(_key),
+            placeholder: !imageUrl,
           })),
       }))
     }
   } catch (err) {
     console.error("Failed to fetch exhibits from Sanity:", err)
   }
-  return FALLBACK_EXHIBITS.map((exhibit) => ({ ...exhibit, placeholder: true }))
+  return EXHIBIT_TEMPLATES.map((exhibit) => ({
+    ...exhibit,
+    photos: exhibit.photos.map((photo) => ({ ...photo, placeholder: true })),
+  }))
 }
