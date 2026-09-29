@@ -1,34 +1,22 @@
-import Blog01 from "@/components/blog-01";
-import { TextAnimate } from "@/components/ui/text-animate";
+import type { Metadata } from "next";
+import { ArticleGrid } from "@/components/blog/article-grid";
+import { PageHeading } from "@/components/page-heading";
 import { getSanityPosts } from "@/data/articles";
+
+export const metadata: Metadata = {
+  title: "Stories | The Nature Club",
+  description: "Field notes and stories from the wild.",
+};
+
+export const revalidate = 60;
 
 export default async function BlogsPage() {
   const articles = await getSanityPosts();
 
   return (
-    <div className="min-h-svh w-full bg-[#271b15]">
-      <section className="w-full h-full mt-20">
-        <div className="h-full w-full flex px-4 sm:px-8 py-6 sm:py-8 lg:py-10">
-          <div className="w-full h-full flex flex-col gap-3 sm:gap-4">
-            <TextAnimate
-              animation="slideLeft"
-              by="character"
-              as="h1"
-              className="text-white text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight drop-shadow-sm"
-            >
-              BLOGS
-            </TextAnimate>
-            <TextAnimate
-              animation="slideLeft"
-              as="p"
-              className="-mt-2 text-sm sm:text-base text-gray-300 max-w-2xl"
-            >
-              Stories from the wild
-            </TextAnimate>
-          </div>
-        </div>
-        <Blog01 initialArticles={articles} />
-      </section>
-    </div>
+    <main className="px-6 py-20 sm:px-12 lg:px-[8%] lg:py-24">
+      <PageHeading title="Stories" subtitle="Field notes from the wild" className="mb-14" />
+      <ArticleGrid articles={articles} />
+    </main>
   );
 }

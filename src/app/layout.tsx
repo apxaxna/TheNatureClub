@@ -1,17 +1,32 @@
 import type { Metadata } from "next";
-import { Montserrat } from "next/font/google";
+import { Cinzel, Merriweather, Nunito_Sans } from "next/font/google";
 import "./globals.css";
-import { Navbar } from "@/components/navbar";
+import { SiteHeader } from "@/components/site/header";
+import { SiteFooter } from "@/components/site/footer";
+import { getSiteSettings } from "@/data/site";
 
-const montserrat = Montserrat({
+const cinzel = Cinzel({
   subsets: ["latin"],
-  variable: "--font-montserrat",
+  variable: "--font-cinzel",
+  display: "swap",
+});
+
+const merriweather = Merriweather({
+  subsets: ["latin"],
+  weight: ["400", "700", "900"],
+  variable: "--font-merriweather",
+  display: "swap",
+});
+
+const nunitoSans = Nunito_Sans({
+  subsets: ["latin"],
+  variable: "--font-nunito-sans",
   display: "swap",
 });
 
 export const metadata: Metadata = {
   title: "The Nature Club",
-  description: "The Nature Club",
+  description: "Landscape & travel photography tours through India's wild places.",
   icons: {
     icon: [
       { url: "/favicon.ico" },
@@ -23,15 +38,18 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const settings = await getSiteSettings();
+
   return (
     <html
       lang="en"
-      className={`${montserrat.variable} h-full antialiased`}
+      className={`${cinzel.variable} ${merriweather.variable} ${nunitoSans.variable} h-full`}
     >
-      <body className="min-h-full flex flex-col relative">
-        <Navbar />
-        {children}
+      <body className="flex min-h-full flex-col">
+        <SiteHeader />
+        <div className="flex-1 pt-14">{children}</div>
+        <SiteFooter socialLinks={settings?.socialLinks} />
       </body>
     </html>
   );

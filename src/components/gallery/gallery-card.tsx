@@ -66,14 +66,14 @@ export function GalleryCard({ item, onOpenLightbox }: GalleryCardProps) {
     <div
       ref={cardRef}
       onClick={() => onOpenLightbox(item)}
-      className="group relative w-full cursor-pointer overflow-hidden rounded-2xl border border-white/8 bg-[#121216] transition-all duration-300 hover:border-white/25 hover:shadow-2xl hover:shadow-black/60"
+      className="group relative w-full cursor-pointer overflow-hidden rounded-sm border border-white/5 bg-white/5 transition-all duration-300 hover:border-white/25 hover:shadow-2xl hover:shadow-black/60"
       style={{
         aspectRatio: item.aspectRatio || 1,
       }}
     >
       {/* Background LQIP or Shimmer */}
       <div
-        className={`absolute inset-0 bg-[#16161b] transition-opacity duration-700 ${
+        className={`absolute inset-0 bg-white/5 transition-opacity duration-700 ${
           isLoaded ? "opacity-0 pointer-events-none" : "opacity-100"
         }`}
         style={
@@ -121,7 +121,7 @@ export function GalleryCard({ item, onOpenLightbox }: GalleryCardProps) {
               aria-label={isMuted ? "Unmute audio" : "Mute audio"}
               className="flex size-7 items-center justify-center rounded-full border border-white/20 bg-black/70 text-white/90 backdrop-blur-md transition-transform hover:scale-110 active:scale-95"
             >
-              {isMuted ? <VolumeX className="size-3.5 text-white/70" /> : <Volume2 className="size-3.5 text-emerald-400" />}
+              {isMuted ? <VolumeX className="size-3.5 text-white/70" /> : <Volume2 className="size-3.5 text-gold" />}
             </button>
           </div>
         </>

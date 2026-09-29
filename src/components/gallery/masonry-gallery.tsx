@@ -10,7 +10,7 @@ import {
 } from "@/lib/gallery-utils";
 import { GalleryCard } from "./gallery-card";
 import { GalleryLightbox } from "./gallery-lightbox";
-import { TextAnimate } from "@/components/ui/text-animate";
+import { PageHeading } from "@/components/page-heading";
 
 interface MasonryGalleryProps {
   initialSanityItems?: SanityGalleryRawItem[];
@@ -25,9 +25,11 @@ export function MasonryGallery({ initialSanityItems = [] }: MasonryGalleryProps)
   }, [initialSanityItems]);
 
   // Total loaded items counter for infinite scroll
+  // Capped at the item count so the page ends and the footer stays reachable.
   const [loadedCount, setLoadedCount] = useState<number>(() =>
-    Math.min(BATCH_SIZE * 2, baseItems.length * 2 || BATCH_SIZE * 2)
+    Math.min(BATCH_SIZE * 2, baseItems.length)
   );
+  const hasMore = loadedCount < baseItems.length;
 
   // Responsive column count
   const [columnCount, setColumnCount] = useState<number>(3);
@@ -59,7 +61,7 @@ export function MasonryGallery({ initialSanityItems = [] }: MasonryGalleryProps)
     return () => window.removeEventListener("resize", updateColumns);
   }, []);
 
-  // Generate instances of items with infinite looping
+  // Instances of the items loaded so far
   const renderedItems: GalleryItemInstance[] = useMemo(() => {
     return generateLoopedBatch(baseItems, 0, loadedCount);
   }, [baseItems, loadedCount]);
@@ -71,14 +73,14 @@ export function MasonryGallery({ initialSanityItems = [] }: MasonryGalleryProps)
 
   // Infinite Scroll Handler: loads more items and seamlessly repeats when ending
   const loadMore = useCallback(() => {
-    if (isLoadingMore || baseItems.length === 0) return;
+    if (isLoadingMore || !hasMore) return;
     setIsLoadingMore(true);
 
     setTimeout(() => {
-      setLoadedCount((prev) => prev + BATCH_SIZE);
+      setLoadedCount((prev) => Math.min(prev + BATCH_SIZE, baseItems.length));
       setIsLoadingMore(false);
     }, 250);
-  }, [isLoadingMore, baseItems.length]);
+  }, [isLoadingMore, hasMore, baseItems.length]);
 
   // IntersectionObserver for bottom sentinel
   useEffect(() => {
@@ -100,28 +102,14 @@ export function MasonryGallery({ initialSanityItems = [] }: MasonryGalleryProps)
   }, [loadMore]);
 
   return (
-    <div className="min-h-svh w-full bg-[#271b15] text-white">
-      {/* Main Container - Covers entire width of screen */}
-      <section className="w-full h-full mt-20">
-        <div className="relative z-10 mx-auto w-full px-4 sm:px-8 py-6 sm:py-8 lg:py-10">
-          {/* Header matching Blogs section typography and animation */}
-          <div className="w-full flex flex-col gap-3 sm:gap-4 mb-8 sm:mb-10">
-            <TextAnimate
-              animation="slideLeft"
-              by="character"
-              as="h1"
-              className="text-white text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight drop-shadow-sm"
-            >
-              GALLERY
-            </TextAnimate>
-            <TextAnimate
-              animation="slideLeft"
-              as="p"
-              className="-mt-2 text-sm sm:text-base text-gray-300 max-w-2xl"
-            >
-              Moments captured from the wild
-            </TextAnimate>
-          </div>
+    <main className="w-full bg-ink text-white">
+      <section className="px-4 py-20 sm:px-8 lg:py-24">
+        <div className="relative z-10 mx-auto w-full">
+          <PageHeading
+            title="Gallery"
+            subtitle="Moments captured from the wild"
+            className="mb-14"
+          />
 
           {baseItems.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-24 text-center">
@@ -157,7 +145,7 @@ export function MasonryGallery({ initialSanityItems = [] }: MasonryGalleryProps)
               >
                 {isLoadingMore && (
                   <div className="flex items-center gap-2 text-xs font-medium tracking-wider uppercase text-white/50">
-                    <span className="size-2 animate-ping rounded-full bg-amber-400" />
+                    <span className="size-2 animate-ping rounded-full bg-gold" />
                     <span>Loading more moments…</span>
                   </div>
                 )}
@@ -174,6 +162,6 @@ export function MasonryGallery({ initialSanityItems = [] }: MasonryGalleryProps)
         onClose={() => setActiveLightboxItem(null)}
         onSelect={setActiveLightboxItem}
       />
-    </div>
+    </main>
   );
 }

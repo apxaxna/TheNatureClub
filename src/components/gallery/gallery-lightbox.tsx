@@ -122,7 +122,7 @@ export function GalleryLightbox({ item, items, onClose, onSelect }: GalleryLight
         onClick={(e) => e.stopPropagation()}
         className="relative flex max-h-[85vh] max-w-[92vw] sm:max-w-[85vw] flex-col items-center justify-center"
       >
-        <div className="relative overflow-hidden rounded-2xl border border-white/10 shadow-2xl bg-[#0d0d11]">
+        <div className="relative overflow-hidden rounded-2xl border border-white/10 shadow-2xl bg-ink">
           {isVideo ? (
             <video
               src={item.src}
