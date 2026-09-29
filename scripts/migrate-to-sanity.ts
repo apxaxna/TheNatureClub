@@ -9,7 +9,7 @@ import { SANITY_POSTS } from "./initial-posts"
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "gnfni9vb"
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production"
 const apiVersion = process.env.NEXT_PUBLIC_SANITY_API_VERSION || "2026-03-01"
-const token = process.env.SANITY_API_WRITE_TOKEN || "sk7PE7UoF4wxr0LgB5tAniJvXmOHlTyDyILGigFf3IVW2pe6L4gQEXr3MKf8xX5UTL5zGW5FBrosVn3zoBCG5z3qbPAm5pDSl0zxNyo5ehi2KrOHhO6G5u2Eo1aeEkhyPYoH3eLv60uLNLTjJwTLtMG9Ysg9udwhDBt9Y4Jl9zOLzZT35ObZ"
+const token = process.env.SANITY_API_WRITE_TOKEN || process.env.SANITY_AUTH_TOKEN
 
 if (!token) {
   console.error("❌ SANITY_API_WRITE_TOKEN is missing in environment!")
