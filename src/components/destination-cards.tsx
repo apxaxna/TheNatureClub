@@ -25,80 +25,8 @@ export type DestinationItem = {
   href?: string;
 };
 
-export const DESTINATIONS_DATA: DestinationItem[] = [
-  {
-    id: "kotageri",
-    title: "KOTAGERI",
-    location: "Nilgiris, Tamil Nadu",
-    image: "/images/kotageri.jpg",
-    rating: 4.9,
-    maxGuests: 4,
-    bedsDescription: "1 Queen or 2 Single Beds",
-    bedCount: 3,
-    pricePerNight: 2000,
-    href: "#",
-  },
-  {
-    id: "singalila",
-    title: "SINGALILA",
-    location: "Eastern Himalayas, West Bengal",
-    image: "/images/singalila.jpg",
-    rating: 4.8,
-    maxGuests: 6,
-    bedsDescription: "1 Queen or 2 Single Beds",
-    bedCount: 3,
-    pricePerNight: 2500,
-    href: "#",
-  },
-  {
-    id: "ladakh",
-    title: "LADAKH",
-    location: "High Desert, Ladakh",
-    image: "/images/ladakh.jpg",
-    rating: 4.9,
-    maxGuests: 4,
-    bedsDescription: "1 Queen or 1 King Bed",
-    bedCount: 2,
-    pricePerNight: 3000,
-    href: "#",
-  },
-  {
-    id: "hampi",
-    title: "HAMPI",
-    location: "Heritage Plains, Karnataka",
-    image: "/images/hampi.jpg",
-    rating: 5.0,
-    maxGuests: 12,
-    bedsDescription: "1 King Bed or 2 Single Beds",
-    bedCount: 3,
-    pricePerNight: 3500,
-    href: "#",
-  },
-  {
-    id: "agumbe",
-    title: "AGUMBE",
-    location: "Rainforest, Western Ghats",
-    image: "/images/agumbe.jpg",
-    rating: 4.8,
-    maxGuests: 4,
-    bedsDescription: "2 Queen Beds",
-    bedCount: 2,
-    pricePerNight: 4500,
-    href: "#",
-  },
-  {
-    id: "pench",
-    title: "PENCH",
-    location: "Tiger Reserve, Madhya Pradesh",
-    image: "/images/pench.jpg",
-    rating: 4.9,
-    maxGuests: 5,
-    bedsDescription: "2 King Beds",
-    bedCount: 2,
-    pricePerNight: 5000,
-    href: "#",
-  },
-];
+// Deprecated dummy destinations array removed in favor of Sanity CMS
+export const DESTINATIONS_DATA: DestinationItem[] = [];
 
 export const DestinationCard = ({
   title,

@@ -59,6 +59,60 @@ export const siteSettingsType = defineType({
       description: 'Main body text in the About Us section',
     }),
     defineField({
+      name: 'aboutImageTopRight',
+      title: 'About Section Photo (Top Right)',
+      type: 'image',
+      options: {
+        hotspot: true,
+      },
+      fields: [
+        defineField({
+          name: 'alt',
+          title: 'Alternative Text',
+          type: 'string',
+        }),
+      ],
+      description: 'Portrait photo in the About Us section (e.g. Tiger)',
+    }),
+    defineField({
+      name: 'aboutImageBottomLeft',
+      title: 'About Section Photo (Bottom Left)',
+      type: 'image',
+      options: {
+        hotspot: true,
+      },
+      fields: [
+        defineField({
+          name: 'alt',
+          title: 'Alternative Text',
+          type: 'string',
+        }),
+      ],
+      description: 'Landscape photo in the About Us section (e.g. Rhino)',
+    }),
+    defineField({
+      name: 'footerImage',
+      title: 'Footer / Contact Background Image',
+      type: 'image',
+      options: {
+        hotspot: true,
+      },
+      fields: [
+        defineField({
+          name: 'alt',
+          title: 'Alternative Text',
+          type: 'string',
+        }),
+      ],
+      description: 'Background image for contact & footer section',
+    }),
+    defineField({
+      name: 'logo',
+      title: 'Site Logo',
+      type: 'image',
+      description: 'Site brand logo',
+    }),
+    defineField({
       name: 'socialLinks',
       title: 'Social Links',
       type: 'array',
