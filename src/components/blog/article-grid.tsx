@@ -19,11 +19,11 @@ export function ArticleGrid({ articles }: { articles: Article[] }) {
 
   return (
     <>
-      <ul className="grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
+      <ul className="mx-auto grid max-w-400 grid-cols-1 gap-x-[clamp(1rem,3vw,2.5rem)] gap-y-12 min-[480px]:grid-cols-2 lg:grid-cols-3">
         {articles.slice(0, visible).map((article) => (
           <li key={article.id}>
-            <Link href={`/blogs/${article.slug || article.id}`} className="group block">
-              <article>
+            <article className="group">
+              <Link href={`/blogs/${article.slug || article.id}`} className="block">
                 <div className="relative aspect-3/2 overflow-hidden bg-line">
                   {article.coverUrl && (
                     <Image
@@ -48,8 +48,8 @@ export function ArticleGrid({ articles }: { articles: Article[] }) {
                 {article.excerpt && (
                   <p className="mt-2 line-clamp-3 text-ink/75">{article.excerpt}</p>
                 )}
-              </article>
-            </Link>
+              </Link>
+            </article>
           </li>
         ))}
       </ul>

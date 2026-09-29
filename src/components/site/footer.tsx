@@ -7,7 +7,7 @@ import {
   FaYoutube,
   FaLink,
 } from "react-icons/fa6"
-import { CONTACT, type SocialLink } from "@/data/site"
+import { formatTime, type Contact } from "@/data/site"
 
 const SOCIAL_ICONS: Record<string, IconType> = {
   instagram: FaInstagram,
@@ -22,70 +22,108 @@ function iconFor(platform: string) {
   return SOCIAL_ICONS[platform.trim().toLowerCase()] ?? FaLink
 }
 
-export function SiteFooter({ socialLinks = [] }: { socialLinks?: SocialLink[] }) {
+const REGION_NAMES = new Intl.DisplayNames(["en"], { type: "region" })
+
+export function SiteFooter({ contact }: { contact: Contact }) {
+  const { email, address, hours, socialLinks } = contact
+
   return (
-    <footer id="contact" className="mt-auto bg-slate text-mist">
+    <footer
+      id="contact"
+      aria-labelledby="contact-heading"
+      className="relative isolate mt-auto overflow-hidden bg-slate text-mist"
+    >
+      {/* Background video; hidden for reduced-motion users, who get the solid slate. */}
+      <video
+        src="/videos/fish.webm"
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="metadata"
+        aria-hidden="true"
+        className="absolute inset-0 -z-10 size-full object-cover motion-reduce:hidden"
+      />
+      {/* Darkening scrim so the footer text stays legible over the footage. */}
+      <div aria-hidden="true" className="absolute inset-0 -z-10 bg-slate/75" />
+
       {/* Contact band */}
-      <div className="bg-black px-4 py-16 text-center sm:py-20">
-        <p className="text-sm font-bold uppercase tracking-[0.25em] text-mist/70">
-          Contact Me
-        </p>
-        <a
-          href={`mailto:${CONTACT.email}`}
-          className="mt-4 inline-block break-all font-serif text-2xl text-white underline-offset-8 transition-colors hover:text-gold hover:underline sm:text-4xl"
+      <div className="bg-black/50 px-4 py-[clamp(2.5rem,6vw,5rem)] text-center">
+        <h2
+          id="contact-heading"
+          className="text-[clamp(0.75rem,0.6rem+0.5vw,0.9rem)] font-bold uppercase tracking-[0.25em] text-mist/70"
         >
-          {CONTACT.email}
+          Contact Me
+        </h2>
+        <a
+          href={`mailto:${email}`}
+          className="mt-3 inline-block font-serif text-[clamp(1.1rem,0.6rem+2.4vw,2.5rem)] break-all text-white underline-offset-8 transition-colors hover:text-gold hover:underline"
+        >
+          {email}
         </a>
       </div>
 
-      <div className="mx-auto grid max-w-6xl gap-12 px-6 py-16 sm:grid-cols-3 sm:gap-8 sm:py-20">
-        <section>
-          <h2 className="font-serif text-2xl">Business Hours</h2>
-          <dl className="mt-5 space-y-1.5 text-mist/80">
-            {CONTACT.hours.map(({ day, time }) => (
-              <div key={day} className="flex gap-2">
-                <dt>{day}:</dt>
-                <dd>{time}</dd>
+      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-[clamp(1rem,4vw,3rem)] py-[clamp(2.5rem,6vw,5rem)] min-[480px]:grid-cols-2 md:grid-cols-3 md:gap-8">
+        <section aria-labelledby="hours-heading">
+          <h2 id="hours-heading" className="font-serif text-[clamp(1.1rem,0.9rem+0.8vw,1.5rem)]">
+            Business Hours
+          </h2>
+          <dl className="mt-4 space-y-1 text-sm text-mist/80 sm:text-base">
+            {hours.map((h) => (
+              <div key={h.day} className="flex gap-2">
+                <dt>{h.day}:</dt>
+                <dd>
+                  <time dateTime={h.opens}>{formatTime(h.opens)}</time> –{" "}
+                  <time dateTime={h.closes}>{formatTime(h.closes)}</time>
+                </dd>
               </div>
             ))}
           </dl>
         </section>
 
-        <section>
-          <h2 className="font-serif text-2xl">Get Social</h2>
-          <ul className="mt-5 flex flex-wrap gap-3">
-            {socialLinks.map((link) => {
-              const Icon = iconFor(link.platform)
-              return (
-                <li key={link.url}>
-                  <a
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={link.platform}
-                    className="flex size-10 items-center justify-center rounded-full bg-white text-black transition-colors hover:bg-gold"
-                  >
-                    <Icon className="size-4" />
-                  </a>
-                </li>
-              )
-            })}
-          </ul>
-        </section>
+        {socialLinks.length > 0 && (
+          <section aria-labelledby="social-heading">
+            <h2 id="social-heading" className="font-serif text-[clamp(1.1rem,0.9rem+0.8vw,1.5rem)]">
+              Get Social
+            </h2>
+            <ul className="mt-4 flex flex-wrap gap-3">
+              {socialLinks.map((link) => {
+                const Icon = iconFor(link.platform)
+                return (
+                  <li key={link.url}>
+                    <a
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer me"
+                      aria-label={`The Nature Club on ${link.platform}`}
+                      className="flex size-10 items-center justify-center rounded-full bg-white text-black transition-colors hover:bg-gold"
+                    >
+                      <Icon className="size-4" aria-hidden="true" />
+                    </a>
+                  </li>
+                )
+              })}
+            </ul>
+          </section>
+        )}
 
-        <section>
-          <h2 className="font-serif text-2xl">Location</h2>
-          <address className="mt-5 not-italic text-mist/80">
-            {CONTACT.location}
+        <section aria-labelledby="location-heading">
+          <h2 id="location-heading" className="font-serif text-[clamp(1.1rem,0.9rem+0.8vw,1.5rem)]">
+            Location
+          </h2>
+          <address className="mt-4 text-sm not-italic text-mist/80 sm:text-base">
+            {address.locality}, {address.region}
             <br />
-            <a href={`mailto:${CONTACT.email}`} className="hover:text-white">
-              {CONTACT.email}
+            {REGION_NAMES.of(address.country) ?? address.country}
+            <br />
+            <a href={`mailto:${email}`} className="hover:text-white">
+              {email}
             </a>
           </address>
         </section>
       </div>
 
-      <p className="border-t border-white/10 px-6 py-6 text-center text-xs text-mist/50">
+      <p className="border-t border-white/10 px-6 py-5 text-center text-xs text-mist/50">
         © {new Date().getFullYear()} The Nature Club. All rights reserved.
       </p>
     </footer>

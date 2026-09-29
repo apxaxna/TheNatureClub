@@ -5,8 +5,10 @@ import { MasonryGallery } from "@/components/gallery/masonry-gallery";
 import { SanityGalleryRawItem } from "@/lib/gallery-utils";
 
 export const metadata: Metadata = {
-  title: "Gallery | The Nature Club",
-  description: "Immersive visual chronicles and motion reels of the untamed natural world.",
+  title: "Gallery",
+  description: "Photographs and short films from our landscape, travel and wildlife photography tours across India.",
+  alternates: { canonical: "/gallery" },
+  openGraph: { url: "/gallery", title: "Gallery" },
 };
 
 export const revalidate = 60;

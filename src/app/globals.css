@@ -18,9 +18,17 @@
   --color-navy: #304254;
   --color-leaf: #4f9a4a;
 
+  /* Aliases for shadcn/ui components */
+  --color-foreground: var(--color-ink);
+  --color-muted-foreground: var(--color-stone);
+
   --font-sans: var(--font-nunito-sans), ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-merriweather), ui-serif, Georgia, serif;
   --font-display: var(--font-cinzel), ui-serif, Georgia, serif;
+}
+
+:root {
+  --header-h: 3.5rem;
 }
 
 @layer base {
@@ -29,7 +37,7 @@
   }
   html {
     @apply scroll-smooth font-sans;
-    scroll-padding-top: 3.5rem;
+    scroll-padding-top: var(--header-h);
   }
   body {
     @apply bg-cream text-ink antialiased;

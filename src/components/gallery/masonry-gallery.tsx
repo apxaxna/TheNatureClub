@@ -11,6 +11,7 @@ import {
 import { GalleryCard } from "./gallery-card";
 import { GalleryLightbox } from "./gallery-lightbox";
 import { PageHeading } from "@/components/page-heading";
+import { PageBreadcrumb } from "@/components/page-breadcrumb";
 
 interface MasonryGalleryProps {
   initialSanityItems?: SanityGalleryRawItem[];
@@ -105,6 +106,14 @@ export function MasonryGallery({ initialSanityItems = [] }: MasonryGalleryProps)
     <main className="w-full bg-ink text-white">
       <section className="px-4 py-20 sm:px-8 lg:py-24">
         <div className="relative z-10 mx-auto w-full">
+          <PageBreadcrumb
+            tone="dark"
+            className="mb-8"
+            items={[
+              { name: "Home", path: "/" },
+              { name: "Gallery", path: "/gallery" },
+            ]}
+          />
           <PageHeading
             title="Gallery"
             subtitle="Moments captured from the wild"

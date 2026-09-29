@@ -32,12 +32,8 @@ export function LogoMark({ className }: { className?: string }) {
 
 export function Wordmark({ className }: { className?: string }) {
   return (
-    <span className={cn("font-serif font-black leading-[1.15]", className)}>
-      The
-      <br />
-      Nature
-      <br />
-      Club.
+    <span className={cn("font-serif font-black leading-[1.15] *:block", className)}>
+      <span>The</span> <span>Nature</span> <span>Club.</span>
     </span>
   )
 }

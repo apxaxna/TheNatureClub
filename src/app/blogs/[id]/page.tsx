@@ -1,15 +1,16 @@
 import type { Metadata } from "next"
 import Image from "next/image"
-import Link from "next/link"
 import { notFound } from "next/navigation"
 import { format } from "date-fns"
-import { ArrowLeftIcon } from "@phosphor-icons/react/dist/ssr"
 
 import {
   getAllArticles,
   getSanityPostBySlugOrId,
 } from "@/data/articles"
 import { PortableText } from "@/components/portable-text"
+import { JsonLd } from "@/components/json-ld"
+import { PageBreadcrumb } from "@/components/page-breadcrumb"
+import { ORGANIZATION_ID, WEBSITE_ID, absoluteUrl } from "@/lib/seo"
 
 export const revalidate = 60
 
@@ -29,13 +30,28 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const article = await getSanityPostBySlugOrId(id)
   if (!article) {
     return {
-      title: "Story Not Found | The Nature Club",
+      title: "Story not found",
+      robots: { index: false },
     }
   }
 
+  const path = `/blogs/${article.slug || article.id}`
   return {
-    title: `${article.title} | The Nature Club`,
+    title: article.title,
     description: article.excerpt,
+    keywords: article.tags,
+    alternates: { canonical: path },
+    openGraph: {
+      type: "article",
+      url: path,
+      title: article.title,
+      description: article.excerpt,
+      publishedTime: article.createdAt,
+      tags: article.tags,
+      ...(article.coverUrl && {
+        images: [{ url: `${article.coverUrl}?w=1200&h=630&fit=crop&auto=format`, width: 1200, height: 630 }],
+      }),
+    },
   }
 }
 
@@ -47,24 +63,44 @@ export default async function BlogDetailPage({ params }: PageProps) {
     notFound()
   }
 
-  return (
-    <main className="px-6 pt-12 pb-24 sm:pt-16">
-      <article className="mx-auto max-w-180">
-        <Link
-          href="/blogs"
-          className="group inline-flex items-center gap-2 text-sm text-stone transition-colors hover:text-ink"
-        >
-          <ArrowLeftIcon className="size-4 transition-transform group-hover:-translate-x-1" />
-          All stories
-        </Link>
+  const path = `/blogs/${article.slug || article.id}`
+  const jsonLd = [
+    {
+      "@type": "BlogPosting",
+      "@id": `${absoluteUrl(path)}#article`,
+      mainEntityOfPage: absoluteUrl(path),
+      headline: article.title,
+      description: article.excerpt,
+      datePublished: article.createdAt,
+      ...(article.coverUrl && { image: article.coverUrl }),
+      keywords: article.tags.join(", "),
+      inLanguage: "en-IN",
+      author: { "@id": ORGANIZATION_ID },
+      publisher: { "@id": ORGANIZATION_ID },
+      isPartOf: { "@id": WEBSITE_ID },
+    },
+  ]
 
+  return (
+    <main className="px-[clamp(1rem,4vw,3rem)] pt-[clamp(1.5rem,4vw,3rem)] pb-24">
+      <JsonLd data={jsonLd} />
+      <PageBreadcrumb
+        className="mx-auto max-w-180"
+        items={[
+          { name: "Home", path: "/" },
+          { name: "Stories", path: "/blogs" },
+          { name: article.title, path },
+        ]}
+      />
+
+      <article className="mx-auto max-w-180" aria-labelledby="article-title">
         <header className="mt-10 text-center">
           {article.tags[0] && (
             <p className="text-xs font-bold uppercase tracking-widest text-gold">
               {article.tags[0]}
             </p>
           )}
-          <h1 className="mt-4 font-serif text-3xl leading-tight font-bold text-balance sm:text-5xl">
+          <h1 id="article-title" className="mt-4 font-serif text-3xl leading-tight font-bold text-balance sm:text-5xl">
             {article.title}
           </h1>
           {article.excerpt && (
@@ -78,22 +114,21 @@ export default async function BlogDetailPage({ params }: PageProps) {
             {article.readTime}
           </p>
         </header>
-      </article>
 
       {article.coverUrl && (
-        <div className="relative mx-auto mt-12 aspect-video max-w-6xl overflow-hidden bg-line">
+        <figure className="relative mt-12 aspect-video overflow-hidden bg-line">
           <Image
             src={article.coverUrl}
             alt=""
             fill
             preload
-            sizes="(max-width: 1152px) 100vw, 1152px"
+            sizes="(max-width: 720px) 100vw, 720px"
             className="object-cover"
           />
-        </div>
+        </figure>
       )}
 
-      <div className="mx-auto mt-12 max-w-180">
+      <div className="mt-12">
         <PortableText value={article.body} />
 
         {article.tags.length > 0 && (
@@ -109,6 +144,7 @@ export default async function BlogDetailPage({ params }: PageProps) {
           </ul>
         )}
       </div>
+      </article>
     </main>
   )
 }
