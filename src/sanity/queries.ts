@@ -140,3 +140,47 @@ export const SITE_SETTINGS_QUERY = groq`
     }
   }
 `
+
+export const GALLERY_ITEMS_QUERY = groq`
+  *[_type == "galleryItem"] | order(displayOrder asc, _createdAt desc) {
+    _id,
+    title,
+    mediaType,
+    aspectRatio,
+    displayOrder,
+    "imageUrl": image.asset->url,
+    image {
+      alt,
+      asset-> {
+        _id,
+        url,
+        metadata {
+          dimensions {
+            width,
+            height,
+            aspectRatio
+          },
+          lqip
+        }
+      }
+    },
+    "videoFileUrl": videoFile.asset->url,
+    videoUrl,
+    "posterUrl": videoPoster.asset->url,
+    videoPoster {
+      alt,
+      asset-> {
+        _id,
+        url,
+        metadata {
+          dimensions {
+            width,
+            height,
+            aspectRatio
+          }
+        }
+      }
+    }
+  }
+`
+
