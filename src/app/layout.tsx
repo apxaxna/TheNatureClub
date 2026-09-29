@@ -10,8 +10,8 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "The Nature Club - Discover Your Next Adventure",
-  description: "Explore breathtaking destinations with expertly curated tours. From mountain peaks to pristine beaches, your adventure awaits.",
+  title: "The Nature Club",
+  description: "The Nature Club",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
