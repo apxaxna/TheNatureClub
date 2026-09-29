@@ -63,42 +63,47 @@ export const POST_BY_SLUG_OR_ID_QUERY = groq`
 `
 
 export const DESTINATIONS_QUERY = groq`
-  *[_type == "destination" && featured != false] | order(displayOrder asc) {
+  *[_type == "destination"] | order(displayOrder asc, name asc) {
     _id,
     name,
     "slug": slug.current,
     locationLabel,
+    description,
     rating,
     maxGuests,
     bedsDescription,
-    bedCount,
     pricePerNight,
     "imageUrl": coverImage.asset->url,
-    coverImage {
-      alt,
-      asset-> {
-        _id,
-        url
-      }
-    },
-    description
+    "imageAlt": coverImage.alt
   }
 `
 
-export const DISCOVERIES_QUERY = groq`
-  *[_type == "discovery" && featured != false] | order(displayOrder asc) {
+export const EXHIBITS_QUERY = groq`
+  *[_type == "exhibit"] | order(displayOrder asc, _createdAt asc) {
     _id,
     title,
     "slug": slug.current,
+    season,
     description,
-    "imageUrl": image.asset->url,
-    image {
+    photos[]{
+      _key,
+      title,
+      caption,
       alt,
-      asset-> {
-        _id,
-        url
-      }
+      location,
+      wide,
+      "imageUrl": image.asset->url
     }
+  }
+`
+
+export const TESTIMONIALS_QUERY = groq`
+  *[_type == "testimonial"] | order(displayOrder asc, _createdAt asc) {
+    _id,
+    quote,
+    name,
+    place,
+    rating
   }
 `
 
@@ -106,34 +111,17 @@ export const SITE_SETTINGS_QUERY = groq`
   *[_type == "siteSettings"][0] {
     siteTitle,
     tagline,
+    description,
     heroHeadline,
     "heroImageUrl": heroImage.asset->url,
-    heroImage {
-      alt,
-      asset-> { _id, url }
-    },
     aboutHeadline,
     aboutParagraph,
     "aboutImageTopRightUrl": aboutImageTopRight.asset->url,
-    aboutImageTopRight {
-      alt,
-      asset-> { _id, url }
-    },
-    "aboutImageBottomLeftUrl": aboutImageBottomLeft.asset->url,
-    aboutImageBottomLeft {
-      alt,
-      asset-> { _id, url }
-    },
-    "footerImageUrl": footerImage.asset->url,
-    footerImage {
-      alt,
-      asset-> { _id, url }
-    },
+    "aboutImageTopRightAlt": aboutImageTopRight.alt,
     "logoUrl": logo.asset->url,
-    logo {
-      alt,
-      asset-> { _id, url }
-    },
+    contactEmail,
+    address,
+    businessHours[]{ day, opens, closes },
     socialLinks[]{
       platform,
       url

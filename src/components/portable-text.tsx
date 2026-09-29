@@ -39,44 +39,44 @@ export type PortableTextComponents = {
 export const defaultShadcnTypographyComponents: PortableTextComponents = {
   block: {
     h1: ({ children }) => (
-      <h1 className="scroll-m-20 text-3xl font-extrabold tracking-tight sm:text-4xl text-white mt-12 mb-4">
+      <h1 className="scroll-m-20 font-serif text-3xl font-bold sm:text-4xl text-ink mt-12 mb-4">
         {children}
       </h1>
     ),
     h2: ({ children }) => (
-      <h2 className="scroll-m-20 border-b border-white/10 pb-2 text-2xl sm:text-3xl font-semibold tracking-tight text-white first:mt-0 mb-4">
+      <h2 className="scroll-m-20 font-serif pt-4 text-2xl sm:text-3xl font-bold tracking-tight text-ink first:mt-0 mb-4">
         {children}
       </h2>
     ),
     h3: ({ children }) => (
-      <h3 className="scroll-m-20 text-xl sm:text-2xl font-semibold tracking-tight text-white mt-8 mb-3">
+      <h3 className="scroll-m-20 font-serif text-xl sm:text-2xl font-bold tracking-tight text-ink mt-8 mb-3">
         {children}
       </h3>
     ),
     h4: ({ children }) => (
-      <h4 className="scroll-m-20 text-lg sm:text-xl font-semibold tracking-tight text-white mt-6 mb-2">
+      <h4 className="scroll-m-20 font-serif text-lg sm:text-xl font-bold tracking-tight text-ink mt-6 mb-2">
         {children}
       </h4>
     ),
     normal: ({ children }) => (
-      <p className="leading-7 not-first:mt-6 text-base sm:text-lg text-stone-300">
+      <p className="leading-7 not-first:mt-6 text-base sm:text-lg text-ink/85">
         {children}
       </p>
     ),
     blockquote: ({ children }) => (
-      <blockquote className="mt-8 mb-8 border-l-4 border-[#a8b878] pl-6 italic text-lg sm:text-xl text-stone-200 py-1">
+      <blockquote className="mt-8 mb-8 border-l-4 border-gold pl-6 italic text-lg sm:text-xl text-ink/80 py-1">
         {children}
       </blockquote>
     ),
   },
   list: {
     bullet: ({ children }) => (
-      <ul className="my-6 ml-6 list-disc [&>li]:mt-2 leading-7 text-stone-300 text-base sm:text-lg">
+      <ul className="my-6 ml-6 list-disc [&>li]:mt-2 leading-7 text-ink/85 text-base sm:text-lg">
         {children}
       </ul>
     ),
     number: ({ children }) => (
-      <ol className="my-6 ml-6 list-decimal [&>li]:mt-2 leading-7 text-stone-300 text-base sm:text-lg">
+      <ol className="my-6 ml-6 list-decimal [&>li]:mt-2 leading-7 text-ink/85 text-base sm:text-lg">
         {children}
       </ol>
     ),
@@ -87,11 +87,11 @@ export const defaultShadcnTypographyComponents: PortableTextComponents = {
   },
   marks: {
     strong: ({ children }) => (
-      <strong className="font-semibold text-white">{children}</strong>
+      <strong className="font-semibold text-ink">{children}</strong>
     ),
     em: ({ children }) => <em className="italic">{children}</em>,
     code: ({ children }) => (
-      <code className="relative rounded bg-white/10 px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold text-white">
+      <code className="relative rounded bg-ink/5 px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold text-ink">
         {children}
       </code>
     ),
@@ -102,7 +102,7 @@ export const defaultShadcnTypographyComponents: PortableTextComponents = {
           href={value?.href}
           target={isExternal ? "_blank" : undefined}
           rel={isExternal ? "noopener noreferrer" : undefined}
-          className="font-medium text-[#c2d385] underline underline-offset-4 hover:opacity-80 transition-opacity"
+          className="font-medium text-navy underline decoration-gold underline-offset-4 hover:opacity-80 transition-opacity"
         >
           {children}
         </a>
@@ -112,7 +112,7 @@ export const defaultShadcnTypographyComponents: PortableTextComponents = {
   types: {
     image: ({ value }) => (
       <figure className="my-10 space-y-2">
-        <div className="overflow-hidden rounded-xl ring-1 ring-white/10 shadow-lg">
+        <div className="overflow-hidden rounded-xl ring-1 ring-ink/10">
           <img
             src={value?.asset?.url || value?.url}
             alt={value?.alt || ""}
@@ -120,7 +120,7 @@ export const defaultShadcnTypographyComponents: PortableTextComponents = {
           />
         </div>
         {value?.caption && (
-          <figcaption className="text-center text-xs text-stone-400 italic">
+          <figcaption className="text-center text-xs text-stone italic">
             {value.caption}
           </figcaption>
         )}
@@ -153,7 +153,7 @@ function renderSpan(
           <a
             key={mark}
             href={markDef.href}
-            className="font-medium text-[#c2d385] underline underline-offset-4 hover:opacity-80"
+            className="font-medium text-navy underline decoration-gold underline-offset-4 hover:opacity-80"
           >
             {content}
           </a>
@@ -165,12 +165,12 @@ function renderSpan(
       if (DecoratorRenderer) {
         content = DecoratorRenderer({ children: content, markType: mark })
       } else if (mark === "strong") {
-        content = <strong key={mark} className="font-semibold text-white">{content}</strong>
+        content = <strong key={mark} className="font-semibold text-ink">{content}</strong>
       } else if (mark === "em") {
         content = <em key={mark} className="italic">{content}</em>
       } else if (mark === "code") {
         content = (
-          <code key={mark} className="relative rounded bg-white/10 px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold text-white">
+          <code key={mark} className="relative rounded bg-ink/5 px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold text-ink">
             {content}
           </code>
         )

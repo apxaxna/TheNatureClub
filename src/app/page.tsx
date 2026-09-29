@@ -1,61 +1,67 @@
-import { HomeView } from "@/components/home-view";
-import { type CarouselItem } from "@/components/carousel";
-import { type DestinationItem } from "@/components/destination-cards";
-import { client } from "@/sanity/client";
-import {
-  DESTINATIONS_QUERY,
-  DISCOVERIES_QUERY,
-  SITE_SETTINGS_QUERY,
-} from "@/sanity/queries";
+import type { Metadata } from "next";
+import { Hero } from "@/components/home/hero";
+import { Intro } from "@/components/home/intro";
+import { Exhibits } from "@/components/home/exhibits";
+import { Testimonials } from "@/components/home/testimonials";
+import { JsonLd } from "@/components/json-ld";
+import { getExhibits } from "@/data/exhibits";
+import { getSiteSettings, getTestimonials } from "@/data/site";
+import { ORGANIZATION_ID, absoluteUrl } from "@/lib/seo";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
+
+const FALLBACK_HERO_IMAGE =
+  "https://cdn.sanity.io/images/gnfni9vb/production/8d8c6ebc4077be17d4d6742db469483e5b26a83a-6000x4000.jpg";
+
+const FALLBACK_INTRO =
+  "We are into landscape and travel photography, specialising in capturing the nuances of different seasons.\n\nWe have traveled extensively, photographing the world's most breathtaking views.";
 
 export default async function HomePage() {
-  const [sanityDestinations, sanityDiscoveries, siteSettings] = await Promise.all([
-    client.fetch(DESTINATIONS_QUERY).catch(() => []),
-    client.fetch(DISCOVERIES_QUERY).catch(() => []),
-    client.fetch(SITE_SETTINGS_QUERY).catch(() => null),
+  const [settings, exhibits, testimonials] = await Promise.all([
+    getSiteSettings(),
+    getExhibits(),
+    getTestimonials(),
   ]);
 
-  const discoverItems: CarouselItem[] = (sanityDiscoveries || []).map((d: any) => ({
-    id: d.slug || d._id,
-    title: d.title,
-    image: d.imageUrl,
-    href: `#discover`,
+  // Each exhibit is a photo series by the club (placeholder photos are left out).
+  const exhibitsJsonLd = exhibits.filter((e) => !e.placeholder).map((exhibit) => ({
+    "@type": "ImageGallery",
+    "@id": absoluteUrl(`/#${exhibit.slug}`),
+    name: exhibit.title,
+    ...(exhibit.description && { description: exhibit.description }),
+    url: absoluteUrl(`/#${exhibit.slug}`),
+    author: { "@id": ORGANIZATION_ID },
+    associatedMedia: exhibit.photos.map((photo) => ({
+      "@type": "ImageObject",
+      contentUrl: photo.imageUrl,
+      name: photo.title,
+      caption: photo.caption,
+      description: photo.alt,
+      ...(photo.location && {
+        contentLocation: { "@type": "Place", name: photo.location },
+      }),
+    })),
   }));
-
-  const destinationItems: DestinationItem[] = (sanityDestinations || []).map((d: any) => ({
-    id: d.slug || d._id,
-    title: d.name,
-    location: d.locationLabel,
-    image: d.imageUrl,
-    rating: d.rating ?? 5.0,
-    maxGuests: d.maxGuests ?? 4,
-    bedsDescription: d.bedsDescription ?? "Luxury Bedding",
-    bedCount: d.bedCount ?? 2,
-    pricePerNight: d.pricePerNight ?? 2500,
-    href: `#destinations`,
-  }));
-
-  const heroHeadline = siteSettings?.heroHeadline || "Pack Your Bags. Chase the World.";
-  const heroImageUrl =
-    siteSettings?.heroImageUrl ||
-    "https://cdn.sanity.io/images/gnfni9vb/production/8d8c6ebc4077be17d4d6742db469483e5b26a83a-6000x4000.jpg";
-  const footerImageUrl =
-    siteSettings?.footerImageUrl ||
-    "https://cdn.sanity.io/images/gnfni9vb/production/352ed95f6722fcbcedef3a922730257f082f4ba0-6960x3904.jpg";
 
   return (
-    <HomeView
-      discoverItems={discoverItems}
-      destinationItems={destinationItems}
-      heroHeadline={heroHeadline}
-      heroImageUrl={heroImageUrl}
-      footerImageUrl={footerImageUrl}
-      aboutHeadline={siteSettings?.aboutHeadline}
-      aboutParagraph={siteSettings?.aboutParagraph}
-      aboutImageTopRightUrl={siteSettings?.aboutImageTopRightUrl}
-      aboutImageBottomLeftUrl={siteSettings?.aboutImageBottomLeftUrl}
-    />
+    <main>
+      {exhibitsJsonLd.length > 0 && <JsonLd data={exhibitsJsonLd} />}
+      <Hero
+        headline={settings?.heroHeadline || "Landscape & Travel Photography Tours"}
+        imageUrl={settings?.heroImageUrl || FALLBACK_HERO_IMAGE}
+      />
+      <Intro
+        heading={settings?.aboutHeadline || "Hi, What are we into?"}
+        paragraph={settings?.aboutParagraph || FALLBACK_INTRO}
+        imageUrl={settings?.aboutImageTopRightUrl}
+        imageAlt={settings?.aboutImageTopRightAlt}
+      />
+      <Exhibits items={exhibits} />
+      <Testimonials items={testimonials} />
+    </main>
   );
 }

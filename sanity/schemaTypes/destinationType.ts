@@ -26,7 +26,7 @@ export const destinationType = defineType({
       name: 'locationLabel',
       title: 'Location Label',
       type: 'string',
-      description: 'Displayed in the card location pill (e.g. "Tiger Reserve, Madhya Pradesh")',
+      description: 'Shown under the name on the card (e.g. "Tiger Reserve, Madhya Pradesh")',
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -87,20 +87,13 @@ export const destinationType = defineType({
       },
     }),
     defineField({
-      name: 'featured',
-      title: 'Featured on Homepage',
-      type: 'boolean',
-      initialValue: true,
-      description: 'Toggle whether this destination appears in the homepage carousel',
-    }),
-    defineField({
       name: 'displayOrder',
       title: 'Display Order',
       type: 'number',
-      description: 'Used to sort destinations on the homepage (e.g. 1, 2, 3)',
+      description: 'Sort order on the Destinations page (e.g. 1, 2, 3)',
     }),
 
-    // Accommodation / Card Details (Optional, matching existing card UI)
+    // Stay details shown on the destination card
     defineField({
       name: 'rating',
       title: 'Guest Rating',
@@ -112,14 +105,14 @@ export const destinationType = defineType({
       name: 'pricePerNight',
       title: 'Starting Price Per Night ($)',
       type: 'number',
-      description: 'Displayed in card as "FROM $X/NIGHT"',
+      description: 'Shown on the card as "from $X/night"',
       validation: (rule) => rule.positive(),
     }),
     defineField({
       name: 'maxGuests',
       title: 'Maximum Guests',
       type: 'number',
-      description: 'Displayed in card as "MAX X GUESTS"',
+      description: 'Shown on the card as "Max X Guests"',
       validation: (rule) => rule.integer().positive(),
     }),
     defineField({
@@ -127,13 +120,6 @@ export const destinationType = defineType({
       title: 'Bedding Configuration',
       type: 'string',
       description: 'e.g. "2 King Beds" or "1 Queen or 2 Single Beds"',
-    }),
-    defineField({
-      name: 'bedCount',
-      title: 'Bed Icon Count',
-      type: 'number',
-      description: 'Number of bed icons rendered in the card (1-4)',
-      validation: (rule) => rule.integer().min(1).max(4),
     }),
   ],
   preview: {

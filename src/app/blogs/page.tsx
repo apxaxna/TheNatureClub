@@ -1,34 +1,57 @@
-import Blog01 from "@/components/blog-01";
-import { TextAnimate } from "@/components/ui/text-animate";
+import type { Metadata } from "next";
+import { ArticleGrid } from "@/components/blog/article-grid";
+import { PageHeading } from "@/components/page-heading";
+import { JsonLd } from "@/components/json-ld";
 import { getSanityPosts } from "@/data/articles";
+import { PageBreadcrumb } from "@/components/page-breadcrumb";
+import { ORGANIZATION_ID, absoluteUrl } from "@/lib/seo";
+
+const DESCRIPTION =
+  "Field notes and stories from our wildlife and photography tours across India — tiger tracking, birding, monsoon forests and more.";
+
+export const metadata: Metadata = {
+  title: "Stories",
+  description: DESCRIPTION,
+  alternates: { canonical: "/blogs" },
+  openGraph: { url: "/blogs", title: "Stories", description: DESCRIPTION },
+};
+
+export const revalidate = 60;
 
 export default async function BlogsPage() {
   const articles = await getSanityPosts();
 
+  const jsonLd = [
+    {
+      "@type": "Blog",
+      "@id": absoluteUrl("/blogs"),
+      url: absoluteUrl("/blogs"),
+      name: "The Nature Club Stories",
+      description: DESCRIPTION,
+      publisher: { "@id": ORGANIZATION_ID },
+      blogPost: articles.map((a) => ({
+        "@type": "BlogPosting",
+        "@id": `${absoluteUrl(`/blogs/${a.slug || a.id}`)}#article`,
+        url: absoluteUrl(`/blogs/${a.slug || a.id}`),
+        headline: a.title,
+        datePublished: a.createdAt,
+        ...(a.coverUrl && { image: a.coverUrl }),
+      })),
+    },
+  ];
+
   return (
-    <div className="min-h-svh w-full bg-[#271b15]">
-      <section className="w-full h-full mt-20">
-        <div className="h-full w-full flex px-4 sm:px-8 py-6 sm:py-8 lg:py-10">
-          <div className="w-full h-full flex flex-col gap-3 sm:gap-4">
-            <TextAnimate
-              animation="slideLeft"
-              by="character"
-              as="h1"
-              className="text-white text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight drop-shadow-sm"
-            >
-              BLOGS
-            </TextAnimate>
-            <TextAnimate
-              animation="slideLeft"
-              as="p"
-              className="-mt-2 text-sm sm:text-base text-gray-300 max-w-2xl"
-            >
-              Stories from the wild
-            </TextAnimate>
-          </div>
-        </div>
-        <Blog01 initialArticles={articles} />
-      </section>
-    </div>
+    <main className="px-[clamp(1rem,4vw,6rem)] py-[clamp(2.5rem,7vw,6rem)]">
+      <JsonLd data={jsonLd} />
+      <PageBreadcrumb
+        className="mb-8"
+        items={[
+          { name: "Home", path: "/" },
+          { name: "Stories", path: "/blogs" },
+        ]}
+      />
+      <PageHeading title="Stories" subtitle="Field notes from the wild" className="mb-14" />
+      <ArticleGrid articles={articles} />
+    </main>
   );
 }
