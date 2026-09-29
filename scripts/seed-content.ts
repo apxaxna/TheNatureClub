@@ -1,7 +1,9 @@
 /**
  * Brings Sanity content in line with the thenatureclub.in copy:
- * site settings text, contact details, business hours and guest testimonials.
- * Safe to re-run: settings are patched and testimonials use fixed ids.
+ * site settings text, contact details, business hours, guest testimonials, and the
+ * three seasonal exhibits (photo slots with titles/captions, ready for image uploads).
+ * Safe to re-run: settings are patched, testimonials use fixed ids, and exhibits are
+ * only created if missing, so uploaded photos are never overwritten.
  *
  *   npx tsx scripts/seed-content.ts
  */
@@ -9,6 +11,7 @@ import * as dotenv from "dotenv"
 dotenv.config()
 
 import { createClient } from "next-sanity"
+import { EXHIBIT_TEMPLATES } from "../src/data/exhibits"
 
 const token = process.env.SANITY_API_WRITE_TOKEN || process.env.SANITY_AUTH_TOKEN
 if (!token) {
@@ -87,8 +90,32 @@ async function main() {
     })
   })
 
+  EXHIBIT_TEMPLATES.forEach((exhibit, i) => {
+    tx.createIfNotExists({
+      _id: `exhibit-${exhibit.id}`,
+      _type: "exhibit",
+      title: exhibit.title,
+      slug: { _type: "slug", current: exhibit.slug },
+      season: exhibit.season,
+      description: exhibit.description,
+      displayOrder: i + 1,
+      photos: exhibit.photos.map((photo) => ({
+        _key: photo.id,
+        _type: "exhibitPhoto",
+        title: photo.title,
+        caption: photo.caption,
+        alt: photo.alt,
+        location: photo.location,
+        wide: photo.wide ?? false,
+      })),
+    })
+  })
+
   await tx.commit()
-  console.log(`✅ Updated site settings (${ids.join(", ")}) and ${TESTIMONIALS.length} testimonials`)
+  console.log(
+    `✅ Updated site settings (${ids.join(", ")}), ${TESTIMONIALS.length} testimonials, ` +
+      `and ensured ${EXHIBIT_TEMPLATES.length} exhibits exist`
+  )
 }
 
 main().catch((err) => {
