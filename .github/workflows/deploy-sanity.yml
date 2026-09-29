@@ -34,6 +34,6 @@ jobs:
         run: npm ci
 
       - name: Deploy Sanity Studio
-        run: npx sanity@latest deploy --yes
+        run: npx sanity@latest deploy --url thenatureclub --yes
         env:
           SANITY_AUTH_TOKEN: ${{ secrets.SANITY_AUTH_TOKEN }}
