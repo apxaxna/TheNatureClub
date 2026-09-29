@@ -25,9 +25,8 @@ export type Exhibit = {
 // Placeholder photo until the real one is uploaded in Sanity.
 const placeholder = (seed: string) => `https://picsum.photos/seed/tnc-${seed}/1600/1200`
 
-// The three seasonal exhibits from thenatureclub.in. Shown when Sanity has no exhibits,
-// and used by scripts/seed-content.ts to create the matching Sanity documents.
-export const EXHIBIT_TEMPLATES: Exhibit[] = [
+// The three seasonal exhibits from thenatureclub.in, shown if Sanity has no exhibits.
+const EXHIBIT_TEMPLATES: Exhibit[] = [
   {
     id: "winter",
     slug: "the-winter-exhibit",
