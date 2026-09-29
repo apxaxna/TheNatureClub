@@ -1,5 +1,4 @@
 import { GalleryItem, GalleryItemInstance } from "@/types/gallery";
-import { FALLBACK_GALLERY_ITEMS } from "@/remove/fallback-gallery";
 
 export interface SanityGalleryRawItem {
   _id: string;
@@ -57,9 +56,7 @@ export function parseAspectRatioString(ratioStr?: string): number | null {
 }
 
 export function normalizeSanityGalleryItems(rawItems: SanityGalleryRawItem[]): GalleryItem[] {
-  if (!rawItems || rawItems.length === 0) {
-    return FALLBACK_GALLERY_ITEMS;
-  }
+
 
   const items: GalleryItem[] = [];
 
@@ -116,7 +113,7 @@ export function normalizeSanityGalleryItems(rawItems: SanityGalleryRawItem[]): G
 
   // If Sanity only has 1 or 2 items, blend with fallback so the infinite grid is visually rich
   if (items.length < 6) {
-    return [...items, ...FALLBACK_GALLERY_ITEMS];
+    return [...items];
   }
 
   return items;
