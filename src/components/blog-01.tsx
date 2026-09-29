@@ -8,19 +8,23 @@ import { Button } from "@/components/ui/button"
 import { ArticleItem } from "@/components/article-item"
 import { ARTICLES, type Article } from "@/data/articles"
 
-export default function Blog01() {
+export default function Blog01({
+  initialArticles = ARTICLES,
+}: {
+  initialArticles?: Article[]
+}) {
   const [displayedArticles, setDisplayedArticles] = useState<Article[]>(() =>
-    ARTICLES.slice(0, 6)
+    initialArticles.slice(0, 6)
   )
 
   const handleLoadMore = () => {
     setDisplayedArticles((prev) => {
       const currentLength = prev.length
-      if (currentLength < ARTICLES.length) {
-        return ARTICLES.slice(0, currentLength + 6)
+      if (currentLength < initialArticles.length) {
+        return initialArticles.slice(0, currentLength + 6)
       }
       // If we've shown all base articles, cycle through and generate new items with unique IDs
-      const nextBatch: Article[] = ARTICLES.slice(0, 6).map((article, idx) => ({
+      const nextBatch: Article[] = initialArticles.slice(0, 6).map((article, idx) => ({
         ...article,
         id: `${currentLength + idx + 1}`,
       }))
@@ -35,7 +39,7 @@ export default function Blog01() {
           <Link
             key={article.id}
             className="block h-full transition-transform duration-200 hover:-translate-y-1"
-            href={`/blogs/${article.id}`}
+            href={`/blogs/${article.slug || article.id}`}
           >
             <ArticleItem
               title={article.title}

@@ -1,0 +1,39 @@
+name: Deploy Sanity Studio
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "sanity/**"
+      - ".github/workflows/deploy-sanity.yml"
+
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy Studio
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: sanity
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: sanity/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Deploy Sanity Studio
+        run: npx sanity@latest deploy --yes
+        env:
+          SANITY_AUTH_TOKEN: ${{ secrets.SANITY_AUTH_TOKEN }}

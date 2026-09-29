@@ -39,12 +39,12 @@ export type PortableTextComponents = {
 export const defaultShadcnTypographyComponents: PortableTextComponents = {
   block: {
     h1: ({ children }) => (
-      <h1 className="scroll-m-20 text-3xl font-extrabold tracking-tight sm:text-4xl text-white mt-12 mb-4 first:mt-0">
+      <h1 className="scroll-m-20 text-3xl font-extrabold tracking-tight sm:text-4xl text-white mt-12 mb-4">
         {children}
       </h1>
     ),
     h2: ({ children }) => (
-      <h2 className="scroll-m-20 border-b border-white/10 pb-2 text-2xl sm:text-3xl font-semibold tracking-tight text-white first:mt-0 mt-12 mb-4">
+      <h2 className="scroll-m-20 border-b border-white/10 pb-2 text-2xl sm:text-3xl font-semibold tracking-tight text-white first:mt-0 mb-4">
         {children}
       </h2>
     ),
@@ -59,7 +59,7 @@ export const defaultShadcnTypographyComponents: PortableTextComponents = {
       </h4>
     ),
     normal: ({ children }) => (
-      <p className="leading-7 [&:not(:first-child)]:mt-6 text-base sm:text-lg text-stone-300">
+      <p className="leading-7 not-first:mt-6 text-base sm:text-lg text-stone-300">
         {children}
       </p>
     ),

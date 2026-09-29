@@ -4,7 +4,10 @@ import { notFound } from "next/navigation"
 import { format } from "date-fns"
 import { ArrowLeft, Clock, Calendar, Tag } from "lucide-react"
 
-import { getArticleById, getAllArticles } from "@/data/articles"
+import {
+  getAllArticles,
+  getSanityPostBySlugOrId,
+} from "@/data/articles"
 import { PortableText } from "@/components/portable-text"
 
 interface PageProps {
@@ -13,13 +16,13 @@ interface PageProps {
 
 export async function generateStaticParams() {
   return getAllArticles().map((article) => ({
-    id: article.id,
+    id: article.slug || article.id,
   }))
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { id } = await params
-  const article = getArticleById(id)
+  const article = await getSanityPostBySlugOrId(id)
   if (!article) {
     return {
       title: "Story Not Found | The Nature Club",
@@ -34,7 +37,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function BlogDetailPage({ params }: PageProps) {
   const { id } = await params
-  const article = getArticleById(id)
+  const article = await getSanityPostBySlugOrId(id)
 
   if (!article) {
     notFound()
@@ -42,7 +45,7 @@ export default async function BlogDetailPage({ params }: PageProps) {
 
   return (
     <div className="min-h-svh w-full bg-[#271b15] text-[#f5f1eb]">
-      <div className="max-w-[720px] mx-auto px-4 sm:px-6 pt-28 sm:pt-32 pb-24">
+      <div className="max-w-180 mx-auto px-4 sm:px-6 pt-28 sm:pt-32 pb-24">
         {/* Back Link */}
         <Link
           href="/blogs"

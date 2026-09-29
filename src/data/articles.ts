@@ -822,3 +822,64 @@ export function getArticleById(idOrSlug: string): Article | undefined {
 export function getAllArticles(): Article[] {
   return ARTICLES
 }
+
+export async function getSanityPosts(): Promise<Article[]> {
+  try {
+    const { client } = await import("@/sanity/client")
+    const { POSTS_QUERY } = await import("@/sanity/queries")
+    const sanityPosts = await client.fetch(POSTS_QUERY)
+    if (sanityPosts && sanityPosts.length > 0) {
+      const normalizedSanityPosts: Article[] = sanityPosts.map((post: any) => ({
+        id: post.slug || post._id,
+        slug: post.slug,
+        title: post.title,
+        coverUrl: post.coverUrl,
+        createdAt: post.publishedAt,
+        readTime: post.readTime || "5 min read",
+        tags: post.tags || [],
+        excerpt: post.excerpt || "",
+        body: post.body,
+      }))
+      const sanitySlugs = new Set(normalizedSanityPosts.map((p) => p.slug))
+      const remainingLocal = ARTICLES.filter(
+        (p) => !sanitySlugs.has(p.slug) && !sanitySlugs.has(p.id)
+      )
+      return [...normalizedSanityPosts, ...remainingLocal]
+    }
+  } catch (err) {
+    console.error(
+      "Failed to fetch posts from Sanity, falling back to local posts",
+      err
+    )
+  }
+  return ARTICLES
+}
+
+export async function getSanityPostBySlugOrId(
+  slugOrId: string
+): Promise<Article | undefined> {
+  try {
+    const { client } = await import("@/sanity/client")
+    const { POST_BY_SLUG_OR_ID_QUERY } = await import("@/sanity/queries")
+    const post = await client.fetch(POST_BY_SLUG_OR_ID_QUERY, { slugOrId })
+    if (post) {
+      return {
+        id: post.slug || post._id,
+        slug: post.slug,
+        title: post.title,
+        coverUrl: post.coverUrl,
+        createdAt: post.publishedAt,
+        readTime: post.readTime || "5 min read",
+        tags: post.tags || [],
+        excerpt: post.excerpt || "",
+        body: post.body,
+      }
+    }
+  } catch (err) {
+    console.error(
+      "Failed to fetch post by slug from Sanity, checking local posts",
+      err
+    )
+  }
+  return getArticleById(slugOrId)
+}
