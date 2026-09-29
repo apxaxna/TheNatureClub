@@ -18,6 +18,7 @@ import { Carousel, type CarouselItem } from "@/components/carousel";
 import { DestinationCarousel } from "@/components/destination-cards";
 import { ContactCard } from "@/components/contact-card";
 import { Footer } from "@/components/footer";
+import { AboutUs } from "@/components/about-us";
 
 
 const commandGroups: CommandMenuGroupDef[] = [
@@ -125,13 +126,14 @@ const page = () => {
         </div>
       </section>
 
-      {/*Why us*/}
-      <section id="why-us" className="min-h-svh w-full">
-        <div className="w-full h-full flex flex-col px-4 sm:px-8 py-6 sm:py-8 lg:py-10">
+      {/*Why us / About us*/}
+      <section id="why-us" className="min-h-svh w-full flex flex-col justify-between">
+        <div className="w-full flex flex-col px-4 sm:px-8 py-6 sm:py-8 lg:py-10">
           <TextAnimate animation="slideLeft" by="character" as="h1" className="text-black text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight drop-shadow-sm">
             ABOUT US
           </TextAnimate>
         </div>
+        <AboutUs />
       </section>
       {/*Destinations*/}
       <section id="destinations" className="min-h-svh w-full">
@@ -147,7 +149,6 @@ const page = () => {
           </div>
         </div>
       </section>
-      <ProgressiveBlur height="50%" position="bottom" />
       {/*Footer / Contact Section*/}
       <section
         id="contact"
