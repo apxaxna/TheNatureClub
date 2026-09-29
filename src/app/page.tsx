@@ -13,7 +13,6 @@ import {
   Calendar,
 } from "lucide-react";
 import { TextAnimate } from "@/components/ui/text-animate";
-import { ProgressiveBlur } from "@/components/ui/progressive-blur";
 import { Carousel, type CarouselItem } from "@/components/carousel";
 import { DestinationCarousel } from "@/components/destination-cards";
 import { ContactCard } from "@/components/contact-card";
@@ -108,12 +107,7 @@ const page = () => {
             />
           </div>
         </div>
-      </nav>
-
-      {/* Hero Section - Full Width Image Placeholder */}
-      <section className="border-2 border-black h-[600px] flex items-center justify-center">
-        <span className="text-2xl">HERO IMAGE</span>
-      </section>
+        </section>
 
 
       {/*Discovery*/}
