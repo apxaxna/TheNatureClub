@@ -56,7 +56,7 @@ export function GalleryLightbox({ item, items, onClose, onSelect }: GalleryLight
       role="dialog"
       aria-modal="true"
       onClick={onClose}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-xl transition-all duration-300 animate-in fade-in"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-xl animate-in fade-in duration-200"
     >
       {/* Top Header Bar */}
       <div
@@ -120,7 +120,8 @@ export function GalleryLightbox({ item, items, onClose, onSelect }: GalleryLight
       {/* Main Content Area */}
       <div
         onClick={(e) => e.stopPropagation()}
-        className="relative flex max-h-[85vh] max-w-[92vw] sm:max-w-[85vw] flex-col items-center justify-center"
+        // Enters once on open; stepping between photos swaps content without re-animating.
+        className="relative flex max-h-[85vh] max-w-[92vw] sm:max-w-[85vw] flex-col items-center justify-center animate-in fade-in zoom-in-[0.96] duration-250 ease-out-strong motion-reduce:zoom-in-100"
       >
         <div className="relative overflow-hidden rounded-2xl border border-white/10 shadow-2xl bg-ink">
           {isVideo ? (

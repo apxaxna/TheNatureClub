@@ -63,14 +63,14 @@ export function SiteFooter({ contact }: { contact: Contact }) {
         </a>
       </div>
 
-      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-[clamp(1rem,4vw,3rem)] py-[clamp(2.5rem,6vw,5rem)] min-[480px]:grid-cols-2 md:grid-cols-3 md:gap-8">
+      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-[clamp(1rem,4vw,3rem)] py-[clamp(2.5rem,6vw,5rem)] text-center md:grid-cols-3 md:gap-8">
         <section aria-labelledby="hours-heading">
           <h2 id="hours-heading" className="font-serif text-[clamp(1.1rem,0.9rem+0.8vw,1.5rem)]">
             Business Hours
           </h2>
           <dl className="mt-4 space-y-1 text-sm text-mist/80 sm:text-base">
             {hours.map((h) => (
-              <div key={h.day} className="flex gap-2">
+              <div key={h.day} className="flex justify-center gap-2">
                 <dt>{h.day}:</dt>
                 <dd>
                   <time dateTime={h.opens}>{formatTime(h.opens)}</time> –{" "}
@@ -86,7 +86,7 @@ export function SiteFooter({ contact }: { contact: Contact }) {
             <h2 id="social-heading" className="font-serif text-[clamp(1.1rem,0.9rem+0.8vw,1.5rem)]">
               Get Social
             </h2>
-            <ul className="mt-4 flex flex-wrap gap-3">
+            <ul className="mt-4 flex flex-wrap justify-center gap-3">
               {socialLinks.map((link) => {
                 const Icon = iconFor(link.platform)
                 return (
@@ -96,7 +96,7 @@ export function SiteFooter({ contact }: { contact: Contact }) {
                       target="_blank"
                       rel="noopener noreferrer me"
                       aria-label={`The Nature Club on ${link.platform}`}
-                      className="flex size-10 items-center justify-center rounded-full bg-white text-black transition-colors hover:bg-gold"
+                      className="flex size-10 items-center justify-center rounded-full bg-white text-black transition-[background-color,scale] duration-150 ease-out hover:bg-gold active:scale-[0.97]"
                     >
                       <Icon className="size-4" aria-hidden="true" />
                     </a>
