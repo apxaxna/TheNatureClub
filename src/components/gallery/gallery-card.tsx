@@ -66,7 +66,7 @@ export function GalleryCard({ item, onOpenLightbox }: GalleryCardProps) {
     <div
       ref={cardRef}
       onClick={() => onOpenLightbox(item)}
-      className="group relative w-full cursor-pointer overflow-hidden rounded-sm border border-white/5 bg-white/5 transition-all duration-300 hover:border-white/25 hover:shadow-2xl hover:shadow-black/60"
+      className="group relative w-full cursor-pointer overflow-hidden rounded-sm border border-white/5 bg-white/5 transition-[border-color,box-shadow] duration-300 hover:border-white/25 hover:shadow-2xl hover:shadow-black/60"
       style={{
         aspectRatio: item.aspectRatio || 1,
       }}
@@ -102,11 +102,11 @@ export function GalleryCard({ item, onOpenLightbox }: GalleryCardProps) {
             playsInline
             preload="metadata"
             onLoadedData={() => setIsLoaded(true)}
-            className="size-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+            className="size-full object-cover transition-transform duration-700 ease-out-strong motion-safe:group-hover:scale-[1.03]"
           />
 
-          {/* Quick Video Controls on Card */}
-          <div className="absolute top-3 right-3 z-10 flex items-center gap-1.5 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+          {/* Quick Video Controls on Card: revealed on hover with a mouse, always shown on touch (no hover there). */}
+          <div className="absolute top-3 right-3 z-10 flex items-center gap-1.5 transition-opacity duration-200 pointer-fine:opacity-0 group-hover:opacity-100 group-focus-within:opacity-100">
             <button
               type="button"
               onClick={togglePlay}
@@ -133,7 +133,7 @@ export function GalleryCard({ item, onOpenLightbox }: GalleryCardProps) {
           loading="lazy"
           decoding="async"
           onLoad={() => setIsLoaded(true)}
-          className={`size-full object-cover transition-all duration-700 ease-out group-hover:scale-[1.03] ${
+          className={`size-full object-cover transition-[opacity,scale] duration-700 ease-out-strong motion-safe:group-hover:scale-[1.03] ${
             isLoaded ? "opacity-100" : "opacity-0"
           }`}
         />

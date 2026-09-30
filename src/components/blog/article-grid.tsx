@@ -20,8 +20,13 @@ export function ArticleGrid({ articles }: { articles: Article[] }) {
   return (
     <>
       <ul className="mx-auto grid max-w-400 grid-cols-1 gap-x-[clamp(1rem,3vw,2.5rem)] gap-y-12 min-[480px]:grid-cols-2 lg:grid-cols-3">
-        {articles.slice(0, visible).map((article) => (
-          <li key={article.id}>
+        {articles.slice(0, visible).map((article, i) => (
+          // Each batch (first load or "Load more") cascades in rather than popping in at once.
+          <li
+            key={article.id}
+            style={{ transitionDelay: `${(i % PAGE_SIZE) * 60}ms` }}
+            className="transition-[opacity,translate] duration-500 ease-out-strong starting:opacity-0 motion-safe:starting:translate-y-3"
+          >
             <article className="group">
               <Link href={`/blogs/${article.slug || article.id}`} className="block">
                 <div className="relative aspect-3/2 overflow-hidden bg-line">
@@ -31,7 +36,7 @@ export function ArticleGrid({ articles }: { articles: Article[] }) {
                       alt=""
                       fill
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                      className="object-cover transition-transform duration-700 ease-out-strong motion-safe:group-hover:scale-[1.03]"
                     />
                   )}
                 </div>
@@ -59,7 +64,7 @@ export function ArticleGrid({ articles }: { articles: Article[] }) {
           <button
             type="button"
             onClick={() => setVisible((v) => v + PAGE_SIZE)}
-            className="rounded-full border border-ink px-6 py-2.5 text-sm transition-colors hover:bg-ink hover:text-cream"
+            className="rounded-full border border-ink px-6 py-2.5 text-sm transition-[color,background-color,scale] duration-150 ease-out hover:bg-ink hover:text-cream active:scale-[0.97]"
           >
             Load more stories
           </button>

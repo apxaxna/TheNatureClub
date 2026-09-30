@@ -25,6 +25,9 @@
   --font-sans: var(--font-nunito-sans), ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-merriweather), ui-serif, Georgia, serif;
   --font-display: var(--font-cinzel), ui-serif, Georgia, serif;
+
+  /* Stronger than the built-in ease-out: responds instantly, settles softly. */
+  --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 :root {
