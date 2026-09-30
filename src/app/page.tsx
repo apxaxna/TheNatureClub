@@ -8,7 +8,7 @@ import { getExhibits } from "@/data/exhibits";
 import { getSiteSettings, getTestimonials } from "@/data/site";
 import { ORGANIZATION_ID, absoluteUrl, pageAlternates } from "@/lib/seo";
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   alternates: pageAlternates("/"),

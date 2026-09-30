@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Cinzel, Merriweather, Nunito_Sans } from "next/font/google";
+import { preconnect } from "react-dom";
 import "./globals.css";
 import { SiteHeader } from "@/components/site/header";
 import { SiteFooter } from "@/components/site/footer";
@@ -70,6 +71,8 @@ export const viewport: Viewport = {
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   const settings = await getSiteSettings();
   const contact = getContact(settings);
+  // Hero and gallery photos come straight from Sanity's image CDN.
+  preconnect("https://cdn.sanity.io");
 
   return (
     <html

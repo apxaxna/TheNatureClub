@@ -1,6 +1,7 @@
 import { formatTime, type Contact } from "@/data/site"
 import { ContactButton } from "@/components/contact/contact-dialog"
 import { iconFor } from "@/components/site/social-icons"
+import { FooterVideo } from "@/components/site/footer-video"
 
 const REGION_NAMES = new Intl.DisplayNames(["en"], { type: "region" })
 
@@ -14,16 +15,7 @@ export function SiteFooter({ contact }: { contact: Contact }) {
       className="relative isolate mt-auto overflow-hidden bg-slate text-mist"
     >
       {/* Background video; hidden for reduced-motion users, who get the solid slate. */}
-      <video
-        src="/videos/fish.webm"
-        autoPlay
-        loop
-        muted
-        playsInline
-        preload="metadata"
-        aria-hidden="true"
-        className="absolute inset-0 -z-10 size-full object-cover motion-reduce:hidden"
-      />
+      <FooterVideo src="/videos/fish-loop.webm" />
       {/* Darkening scrim so the footer text stays legible over the footage. */}
       <div aria-hidden="true" className="absolute inset-0 -z-10 bg-slate/75" />
 
