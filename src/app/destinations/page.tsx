@@ -8,7 +8,7 @@ import { getDestinations, type Destination } from "@/data/destinations";
 import { PageBreadcrumb } from "@/components/page-breadcrumb";
 import { ORGANIZATION_ID, absoluteUrl, pageOpenGraph, pageAlternates } from "@/lib/seo";
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 const DESCRIPTION =
   "Photography and wildlife destinations we guide across India — with stay details, guest capacity and nightly prices for each.";
