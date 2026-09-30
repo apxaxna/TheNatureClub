@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { LogoMark } from "@/components/brand/logo"
+import { ContactButton } from "@/components/contact/contact-dialog"
 import { cn } from "@/lib/utils"
 
 const NAV_LINKS = [
@@ -10,12 +11,13 @@ const NAV_LINKS = [
   { label: "Destinations", href: "/destinations" },
   { label: "Blogs", href: "/blogs" },
   { label: "Gallery", href: "/gallery" },
-  { label: "Contact", href: "#contact" },
 ]
+
+const LINK_CLASS =
+  "flex items-center border-x border-transparent px-[clamp(0.35rem,1.6vw,1.25rem)] text-[clamp(0.75rem,0.55rem+0.9vw,1rem)] whitespace-nowrap text-navy/75 transition-colors hover:text-ink"
 
 function isActive(pathname: string, href: string) {
   if (href === "/") return pathname === "/"
-  if (href.startsWith("#")) return false
   return pathname === href || pathname.startsWith(`${href}/`)
 }
 
@@ -51,16 +53,16 @@ export function SiteHeader() {
                   <Link
                     href={link.href}
                     aria-current={active ? "page" : undefined}
-                    className={cn(
-                      "flex items-center border-x border-transparent px-[clamp(0.35rem,1.6vw,1.25rem)] text-[clamp(0.75rem,0.55rem+0.9vw,1rem)] whitespace-nowrap text-navy/75 transition-colors hover:text-ink",
-                      active && "border-line font-bold text-ink"
-                    )}
+                    className={cn(LINK_CLASS, active && "border-line font-bold text-ink")}
                   >
                     {link.label}
                   </Link>
                 </li>
               )
             })}
+            <li className="flex">
+              <ContactButton className={LINK_CLASS}>Contact</ContactButton>
+            </li>
           </ul>
         </nav>
       </div>

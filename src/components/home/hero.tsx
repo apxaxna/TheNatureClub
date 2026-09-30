@@ -1,6 +1,6 @@
 import Image from "next/image"
-import Link from "next/link"
 import { LogoMark, Wordmark } from "@/components/brand/logo"
+import { ContactButton } from "@/components/contact/contact-dialog"
 
 /*
  * Mirrors thenatureclub.in: the composition never reflows, it scales.
@@ -52,12 +52,12 @@ export function Hero({
           <p className="font-display text-[clamp(0.8rem,2.25cqw+0.25rem,3.25rem)] leading-[1.2]">
             {headline}
           </p>
-          <Link
-            href="#contact"
+          <ContactButton
+            topic="Booking a tour"
             className="mt-[1.2cqw] inline-flex items-center rounded-full border border-white/90 px-[clamp(0.6rem,1cqw,1rem)] py-[clamp(0.2rem,0.45cqw,0.5rem)] text-[clamp(0.65rem,0.5rem+0.4cqw,0.95rem)] transition-[color,background-color,scale] duration-150 ease-out hover:bg-white hover:text-ink active:scale-[0.97]"
           >
             Book Now
-          </Link>
+          </ContactButton>
         </div>
       </div>
     </section>

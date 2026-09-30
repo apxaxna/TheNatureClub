@@ -8,6 +8,7 @@ import {
   FaLink,
 } from "react-icons/fa6"
 import { formatTime, type Contact } from "@/data/site"
+import { ContactButton } from "@/components/contact/contact-dialog"
 
 const SOCIAL_ICONS: Record<string, IconType> = {
   instagram: FaInstagram,
@@ -61,6 +62,11 @@ export function SiteFooter({ contact }: { contact: Contact }) {
         >
           {email}
         </a>
+        <div className="mt-6">
+          <ContactButton className="inline-flex items-center rounded-full border border-white/80 px-6 py-2 text-sm text-white transition-[color,background-color,border-color,scale] duration-150 ease-out hover:border-gold hover:bg-gold hover:text-ink active:scale-[0.97]">
+            Send a message
+          </ContactButton>
+        </div>
       </div>
 
       <div className="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-[clamp(1rem,4vw,3rem)] py-[clamp(2.5rem,6vw,5rem)] text-center md:grid-cols-3 md:gap-8">

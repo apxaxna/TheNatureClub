@@ -4,6 +4,7 @@ import "./globals.css";
 import { SiteHeader } from "@/components/site/header";
 import { SiteFooter } from "@/components/site/footer";
 import { JsonLd } from "@/components/json-ld";
+import { ContactProvider } from "@/components/contact/contact-dialog";
 import { DEFAULT_DESCRIPTION, SITE_NAME, getContact, getSiteSettings } from "@/data/site";
 import { SITE_URL, organizationJsonLd, websiteJsonLd } from "@/lib/seo";
 
@@ -79,9 +80,11 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="flex min-h-full flex-col">
         <JsonLd data={[organizationJsonLd(settings, contact), websiteJsonLd(settings)]} />
-        <SiteHeader />
-        <div className="flex-1 pt-(--header-h)">{children}</div>
-        <SiteFooter contact={contact} />
+        <ContactProvider>
+          <SiteHeader />
+          <div className="flex-1 pt-(--header-h)">{children}</div>
+          <SiteFooter contact={contact} />
+        </ContactProvider>
       </body>
     </html>
   );
