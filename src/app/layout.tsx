@@ -3,6 +3,7 @@ import { Cinzel, Merriweather, Nunito_Sans } from "next/font/google";
 import "./globals.css";
 import { SiteHeader } from "@/components/site/header";
 import { SiteFooter } from "@/components/site/footer";
+import { SmoothScroll } from "@/components/site/smooth-scroll";
 import { JsonLd } from "@/components/json-ld";
 import { ContactProvider } from "@/components/contact/contact-dialog";
 import { DEFAULT_DESCRIPTION, SITE_NAME, getContact, getSiteSettings } from "@/data/site";
@@ -77,8 +78,9 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="flex min-h-full flex-col">
         <JsonLd data={[organizationJsonLd(settings, contact), websiteJsonLd(settings)]} />
+        <SmoothScroll />
         <ContactProvider>
-          <SiteHeader />
+          <SiteHeader socialLinks={contact.socialLinks} />
           <div className="flex-1 pt-(--header-h)">{children}</div>
           <SiteFooter contact={contact} />
         </ContactProvider>

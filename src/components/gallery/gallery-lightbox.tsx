@@ -80,7 +80,7 @@ export function GalleryLightbox({ item, items, onClose, onSelect }: GalleryLight
             rel="noopener noreferrer"
             title="Open original in new tab"
             aria-label="Open original in new tab"
-            className="flex size-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/70 transition hover:bg-white/15 hover:text-white"
+            className="flex size-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/70 transition-[color,background-color,scale] duration-150 ease-out hover:bg-white/15 hover:text-white active:scale-[0.97]"
           >
             <ExternalLink className="size-4" />
           </a>
@@ -88,7 +88,7 @@ export function GalleryLightbox({ item, items, onClose, onSelect }: GalleryLight
             type="button"
             onClick={onClose}
             aria-label="Close lightbox"
-            className="flex size-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/70 transition hover:bg-white/15 hover:text-white active:scale-95"
+            className="flex size-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/70 transition-[color,background-color,scale] duration-150 ease-out hover:bg-white/15 hover:text-white active:scale-[0.97]"
           >
             <X className="size-5" />
           </button>
@@ -103,9 +103,9 @@ export function GalleryLightbox({ item, items, onClose, onSelect }: GalleryLight
           handlePrev();
         }}
         aria-label="Previous item"
-        className="absolute left-3 sm:left-6 z-20 flex size-11 items-center justify-center rounded-full border border-white/15 bg-black/60 text-white/80 backdrop-blur-md transition hover:bg-white/20 hover:text-white active:scale-95"
+        className="group absolute left-3 sm:left-6 z-20 flex size-11 items-center justify-center rounded-full border border-white/15 bg-black/60 text-white/80 backdrop-blur-md transition-[color,background-color,scale] duration-150 ease-out hover:bg-white/20 hover:text-white active:scale-[0.97]"
       >
-        <ChevronLeft className="size-6" />
+        <ChevronLeft className="size-6 transition-transform duration-200 ease-out-strong group-hover:-translate-x-0.5" />
       </button>
 
       <button
@@ -115,9 +115,9 @@ export function GalleryLightbox({ item, items, onClose, onSelect }: GalleryLight
           handleNext();
         }}
         aria-label="Next item"
-        className="absolute right-3 sm:right-6 z-20 flex size-11 items-center justify-center rounded-full border border-white/15 bg-black/60 text-white/80 backdrop-blur-md transition hover:bg-white/20 hover:text-white active:scale-95"
+        className="group absolute right-3 sm:right-6 z-20 flex size-11 items-center justify-center rounded-full border border-white/15 bg-black/60 text-white/80 backdrop-blur-md transition-[color,background-color,scale] duration-150 ease-out hover:bg-white/20 hover:text-white active:scale-[0.97]"
       >
-        <ChevronRight className="size-6" />
+        <ChevronRight className="size-6 transition-transform duration-200 ease-out-strong group-hover:translate-x-0.5" />
       </button>
 
       {/* Main Content Area */}
@@ -126,7 +126,11 @@ export function GalleryLightbox({ item, items, onClose, onSelect }: GalleryLight
         // Enters once on open; stepping between photos swaps content without re-animating.
         className="relative flex max-h-[85vh] max-w-[92vw] sm:max-w-[85vw] flex-col items-center justify-center animate-in fade-in zoom-in-[0.96] duration-250 ease-out-strong motion-reduce:zoom-in-100"
       >
-        <div className="relative overflow-hidden rounded-2xl border border-white/10 shadow-2xl bg-ink">
+        {/* Keyed per item: stepping to the next photo cross-fades briefly instead of snapping. */}
+        <div
+          key={item.instanceId}
+          className="relative overflow-hidden rounded-2xl border border-white/10 shadow-2xl bg-ink animate-in fade-in duration-200 ease-out"
+        >
           {isVideo ? (
             <video
               src={item.src}

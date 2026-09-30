@@ -90,8 +90,13 @@ export default async function BlogDetailPage({ params }: PageProps) {
   ]
 
   return (
-    <main className="px-[clamp(1rem,4vw,3rem)] pt-[clamp(1.5rem,4vw,3rem)] pb-24">
+    <main className="px-gutter pt-[clamp(1.5rem,4vw,3rem)] pb-section">
       <JsonLd data={jsonLd} />
+      {/* How far through the story you are; a thin gold line under the header. */}
+      <div
+        aria-hidden="true"
+        className="reading-progress fixed inset-x-0 top-(--header-h) z-40 h-0.5 bg-gold"
+      />
       <PageBreadcrumb
         className="mx-auto max-w-180"
         items={[
@@ -104,17 +109,17 @@ export default async function BlogDetailPage({ params }: PageProps) {
       <article className="mx-auto max-w-180" aria-labelledby="article-title">
         <header className="mt-10 text-center">
           {article.tags[0] && (
-            <p className="text-xs font-bold uppercase tracking-widest text-gold">
+            <p className="animate-enter text-xs font-bold uppercase tracking-widest text-gold">
               {article.tags[0]}
             </p>
           )}
-          <h1 id="article-title" className="mt-4 font-serif text-3xl leading-tight font-bold text-balance sm:text-5xl">
+          <h1 id="article-title" className="mt-4 animate-enter font-serif text-3xl leading-tight font-bold text-balance [animation-delay:80ms] sm:text-5xl">
             {article.title}
           </h1>
           {article.excerpt && (
-            <p className="mt-5 text-lg text-ink/70 sm:text-xl">{article.excerpt}</p>
+            <p className="mt-5 animate-enter text-lg text-balance text-ink/70 [animation-delay:160ms] sm:text-xl">{article.excerpt}</p>
           )}
-          <p className="mt-6 text-sm text-stone">
+          <p className="mt-6 animate-enter text-sm text-stone [animation-delay:240ms]">
             <time dateTime={article.createdAt}>
               {format(new Date(article.createdAt), "MMMM d, yyyy")}
             </time>
@@ -140,7 +145,7 @@ export default async function BlogDetailPage({ params }: PageProps) {
         <PortableText value={article.body} />
 
         {article.tags.length > 0 && (
-          <ul className="mt-14 flex flex-wrap gap-2 border-t border-line pt-8">
+          <ul className="mt-16 flex flex-wrap gap-2 border-t border-line pt-8">
             {article.tags.map((tag) => (
               <li
                 key={tag}

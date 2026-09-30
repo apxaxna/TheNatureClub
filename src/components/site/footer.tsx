@@ -1,27 +1,6 @@
-import type { IconType } from "react-icons"
-import {
-  FaFacebookF,
-  FaInstagram,
-  FaLinkedinIn,
-  FaXTwitter,
-  FaYoutube,
-  FaLink,
-} from "react-icons/fa6"
 import { formatTime, type Contact } from "@/data/site"
 import { ContactButton } from "@/components/contact/contact-dialog"
-
-const SOCIAL_ICONS: Record<string, IconType> = {
-  instagram: FaInstagram,
-  facebook: FaFacebookF,
-  x: FaXTwitter,
-  twitter: FaXTwitter,
-  linkedin: FaLinkedinIn,
-  youtube: FaYoutube,
-}
-
-function iconFor(platform: string) {
-  return SOCIAL_ICONS[platform.trim().toLowerCase()] ?? FaLink
-}
+import { iconFor } from "@/components/site/social-icons"
 
 const REGION_NAMES = new Intl.DisplayNames(["en"], { type: "region" })
 
@@ -49,32 +28,33 @@ export function SiteFooter({ contact }: { contact: Contact }) {
       <div aria-hidden="true" className="absolute inset-0 -z-10 bg-slate/75" />
 
       {/* Contact band */}
-      <div className="bg-black/50 px-4 py-[clamp(2.5rem,6vw,5rem)] text-center">
+      <div className="bg-black/50 px-gutter py-[clamp(2.5rem,6vw,5rem)] text-center">
         <h2
           id="contact-heading"
           className="text-[clamp(0.75rem,0.6rem+0.5vw,0.9rem)] font-bold uppercase tracking-[0.25em] text-mist/70"
         >
           Contact Me
         </h2>
+        {/* A gold rule draws out from the left on hover instead of a hard underline. */}
         <a
           href={`mailto:${email}`}
-          className="mt-3 inline-block font-serif text-[clamp(1.1rem,0.6rem+2.4vw,2.5rem)] break-all text-white underline-offset-8 transition-colors hover:text-gold hover:underline"
+          className="relative mt-3 inline-block font-serif text-[clamp(1.1rem,0.6rem+2.4vw,2.5rem)] break-all text-white transition-colors duration-200 after:absolute after:inset-x-0 after:-bottom-1 after:h-px after:origin-left after:scale-x-0 after:bg-gold after:transition-transform after:duration-300 after:ease-out-strong hover:text-gold hover:after:scale-x-100"
         >
           {email}
         </a>
-        <div className="mt-6">
-          <ContactButton className="inline-flex items-center rounded-full border border-white/80 px-6 py-2 text-sm text-white transition-[color,background-color,border-color,scale] duration-150 ease-out hover:border-gold hover:bg-gold hover:text-ink active:scale-[0.97]">
+        <div className="mt-8">
+          <ContactButton className="inline-flex items-center rounded-full border border-white/80 px-6 py-2.5 text-sm text-white transition-[color,background-color,border-color,scale] duration-150 ease-out hover:border-gold hover:bg-gold hover:text-ink active:scale-[0.97]">
             Send a message
           </ContactButton>
         </div>
       </div>
 
-      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-[clamp(1rem,4vw,3rem)] py-[clamp(2.5rem,6vw,5rem)] text-center md:grid-cols-3 md:gap-8">
+      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-gutter py-[clamp(2.5rem,6vw,5rem)] text-center md:grid-cols-3 md:gap-8">
         <section aria-labelledby="hours-heading">
           <h2 id="hours-heading" className="font-serif text-[clamp(1.1rem,0.9rem+0.8vw,1.5rem)]">
             Business Hours
           </h2>
-          <dl className="mt-4 space-y-1 text-sm text-mist/80 sm:text-base">
+          <dl className="mt-4 text-sm leading-7 text-mist/80 sm:text-base">
             {hours.map((h) => (
               <div key={h.day} className="flex justify-center gap-2">
                 <dt>{h.day}:</dt>
@@ -102,7 +82,7 @@ export function SiteFooter({ contact }: { contact: Contact }) {
                       target="_blank"
                       rel="noopener noreferrer me"
                       aria-label={`The Nature Club on ${link.platform}`}
-                      className="flex size-10 items-center justify-center rounded-full bg-white text-black transition-[background-color,scale] duration-150 ease-out hover:bg-gold active:scale-[0.97]"
+                      className="flex size-10 items-center justify-center rounded-full bg-white text-black transition-[background-color,translate,scale] duration-200 ease-out-strong hover:-translate-y-0.5 hover:bg-gold active:scale-[0.97]"
                     >
                       <Icon className="size-4" aria-hidden="true" />
                     </a>
@@ -117,19 +97,19 @@ export function SiteFooter({ contact }: { contact: Contact }) {
           <h2 id="location-heading" className="font-serif text-[clamp(1.1rem,0.9rem+0.8vw,1.5rem)]">
             Location
           </h2>
-          <address className="mt-4 text-sm not-italic text-mist/80 sm:text-base">
+          <address className="mt-4 text-sm leading-7 not-italic text-mist/80 sm:text-base">
             {address.locality}, {address.region}
             <br />
             {REGION_NAMES.of(address.country) ?? address.country}
             <br />
-            <a href={`mailto:${email}`} className="hover:text-white">
+            <a href={`mailto:${email}`} className="transition-colors duration-200 hover:text-white">
               {email}
             </a>
           </address>
         </section>
       </div>
 
-      <p className="border-t border-white/10 px-6 py-5 text-center text-xs text-mist/50">
+      <p className="border-t border-white/10 px-gutter py-5 text-center text-xs text-mist/50">
         © {new Date().getFullYear()} The Nature Club. All rights reserved.
       </p>
     </footer>

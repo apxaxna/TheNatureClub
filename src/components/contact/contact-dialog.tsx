@@ -10,7 +10,7 @@ import {
   type MouseEvent,
   type ReactNode,
 } from "react"
-import { X } from "lucide-react"
+import { LoaderCircle, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 // Public by design: Web3Forms keys only allow sending to the inbox they were created for.
@@ -145,8 +145,10 @@ export function ContactProvider({ children }: { children: ReactNode }) {
         ref={dialogRef}
         aria-labelledby="contact-dialog-title"
         onClick={onDialogClick}
+        data-lenis-prevent
         className={cn(
-          "m-auto w-[min(100%-2rem,36rem)] max-h-[calc(100dvh-2rem)] overflow-y-auto rounded-sm bg-cream text-ink shadow-2xl",
+          // Fixed even while closing, so the exit fade doesn't jump to the top of the page.
+          "fixed inset-0 m-auto w-[min(100%-2rem,36rem)] max-h-[calc(100dvh-2rem)] overflow-y-auto rounded-sm bg-cream text-ink shadow-2xl",
           // Enter/exit: fade and lift; the backdrop fades with it.
           "opacity-0 transition-[opacity,translate,overlay,display] transition-discrete duration-300 ease-out-strong motion-safe:translate-y-4",
           "open:translate-y-0 open:opacity-100 starting:open:opacity-0 motion-safe:starting:open:translate-y-4",
@@ -177,6 +179,20 @@ export function ContactProvider({ children }: { children: ReactNode }) {
 
           {status === "sent" ? (
             <div className="mt-6 text-center" role="status">
+              {/* A rare, happy moment: the check draws itself in. */}
+              <svg
+                viewBox="0 0 48 48"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+                className="draw-in mx-auto mb-5 size-12 text-leaf"
+              >
+                <circle cx="24" cy="24" r="22" pathLength={1} />
+                <path d="M15 24.5 L21.5 31 L33 18" pathLength={1} />
+              </svg>
               <p className="font-serif text-ink/80">
                 Your message is on its way. We usually reply within a working day.
               </p>
@@ -283,8 +299,9 @@ export function ContactProvider({ children }: { children: ReactNode }) {
                 <button
                   type="submit"
                   disabled={status === "sending"}
-                  className="inline-flex min-w-40 items-center justify-center rounded-full bg-ink px-7 py-2.5 text-sm tracking-wide text-cream transition-[background-color,scale,opacity] duration-150 ease-out hover:bg-navy active:scale-[0.97] disabled:cursor-wait disabled:opacity-70"
+                  className="inline-flex min-w-40 items-center justify-center gap-2 rounded-full bg-ink px-7 py-2.5 text-sm tracking-wide text-cream transition-[background-color,scale,opacity] duration-150 ease-out hover:bg-navy active:scale-[0.97] disabled:cursor-wait disabled:opacity-70"
                 >
+                  {status === "sending" && <LoaderCircle aria-hidden="true" className="size-4 animate-spin" />}
                   {status === "sending" ? "Sending…" : "Send message"}
                 </button>
               </div>
@@ -297,7 +314,7 @@ export function ContactProvider({ children }: { children: ReactNode }) {
 }
 
 const inputClass =
-  "block w-full border-0 border-b border-ink/25 bg-transparent px-0 py-2 text-base text-ink outline-none transition-colors focus:border-gold aria-invalid:border-red-700"
+  "peer block w-full border-0 border-b border-ink/25 bg-transparent px-0 py-2 text-base text-ink outline-none transition-colors aria-invalid:border-red-700"
 
 function Field({
   label,
@@ -322,6 +339,11 @@ function Field({
         {optional && <span className="ml-1.5 font-normal tracking-normal text-stone normal-case">(optional)</span>}
       </label>
       {children}
+      {/* Focus rule: a gold line grows out from the centre over the field's own border. */}
+      <span
+        aria-hidden="true"
+        className="-mt-px block h-px scale-x-0 bg-gold transition-transform duration-300 ease-out-strong peer-focus:scale-x-100"
+      />
       {error && (
         <p id={`contact-${name}-error`} className="mt-1.5 text-xs text-red-700">
           {error}

@@ -41,44 +41,44 @@ export const defaultShadcnTypographyComponents: PortableTextComponents = {
   block: {
     // The story title is the page's only <h1>, so a body "h1" drops to a section heading.
     h1: ({ children }) => (
-      <h2 className="scroll-m-20 font-serif text-3xl font-bold sm:text-4xl text-ink mt-12 mb-4">
+      <h2 className="scroll-m-20 font-serif text-3xl font-bold sm:text-4xl text-ink">
         {children}
       </h2>
     ),
     h2: ({ children }) => (
-      <h2 className="scroll-m-20 font-serif pt-4 text-2xl sm:text-3xl font-bold tracking-tight text-ink first:mt-0 mb-4">
+      <h2 className="scroll-m-20 font-serif text-2xl sm:text-3xl font-bold tracking-tight text-ink">
         {children}
       </h2>
     ),
     h3: ({ children }) => (
-      <h3 className="scroll-m-20 font-serif text-xl sm:text-2xl font-bold tracking-tight text-ink mt-8 mb-3">
+      <h3 className="scroll-m-20 font-serif text-xl sm:text-2xl font-bold tracking-tight text-ink">
         {children}
       </h3>
     ),
     h4: ({ children }) => (
-      <h4 className="scroll-m-20 font-serif text-lg sm:text-xl font-bold tracking-tight text-ink mt-6 mb-2">
+      <h4 className="scroll-m-20 font-serif text-lg sm:text-xl font-bold tracking-tight text-ink">
         {children}
       </h4>
     ),
     normal: ({ children }) => (
-      <p className="leading-7 not-first:mt-6 text-base sm:text-lg text-ink/85">
+      <p className="leading-7 text-base sm:text-lg sm:leading-8 text-ink/85">
         {children}
       </p>
     ),
     blockquote: ({ children }) => (
-      <blockquote className="mt-8 mb-8 border-l-4 border-gold pl-6 italic text-lg sm:text-xl text-ink/80 py-1">
+      <blockquote className="border-l-2 border-gold pl-6 italic text-lg sm:text-xl text-ink/80 py-1">
         {children}
       </blockquote>
     ),
   },
   list: {
     bullet: ({ children }) => (
-      <ul className="my-6 ml-6 list-disc [&>li]:mt-2 leading-7 text-ink/85 text-base sm:text-lg">
+      <ul className="ml-6 list-disc marker:text-gold [&>li]:mt-2 leading-7 text-ink/85 text-base sm:text-lg">
         {children}
       </ul>
     ),
     number: ({ children }) => (
-      <ol className="my-6 ml-6 list-decimal [&>li]:mt-2 leading-7 text-ink/85 text-base sm:text-lg">
+      <ol className="ml-6 list-decimal marker:text-gold [&>li]:mt-2 leading-7 text-ink/85 text-base sm:text-lg">
         {children}
       </ol>
     ),
@@ -104,7 +104,7 @@ export const defaultShadcnTypographyComponents: PortableTextComponents = {
           href={value?.href}
           target={isExternal ? "_blank" : undefined}
           rel={isExternal ? "noopener noreferrer" : undefined}
-          className="font-medium text-navy underline decoration-gold underline-offset-4 hover:opacity-80 transition-opacity"
+          className="font-medium text-navy underline decoration-gold/50 underline-offset-4 transition-[text-decoration-color] duration-200 hover:decoration-gold"
         >
           {children}
         </a>
@@ -116,7 +116,7 @@ export const defaultShadcnTypographyComponents: PortableTextComponents = {
       const dimensions = value?.asset?.metadata?.dimensions
       const src = value?.asset?.url
       return (
-        <figure className="my-10 space-y-2">
+        <figure className="space-y-3">
           <div className="overflow-hidden rounded-xl ring-1 ring-ink/10">
             {src ? (
               // Sanity uploads go through next/image (resized, lazy, no layout shift).
@@ -298,5 +298,5 @@ export function PortableText({
 
   flushList()
 
-  return <div className="space-y-6">{renderedNodes}</div>
+  return <div className="prose-flow">{renderedNodes}</div>
 }
