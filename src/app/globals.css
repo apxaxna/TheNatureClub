@@ -45,6 +45,10 @@
   body {
     @apply bg-cream text-ink antialiased;
   }
+  /* Freeze the page behind an open modal <dialog>. */
+  html:has(dialog[open]) {
+    overflow: hidden;
+  }
   ::selection {
     @apply bg-gold/40;
   }

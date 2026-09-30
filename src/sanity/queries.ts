@@ -1,65 +1,37 @@
 import { groq } from "next-sanity"
 
-export const POSTS_QUERY = groq`
-  *[_type == "post" && defined(slug.current)] | order(publishedAt desc) {
-    _id,
-    title,
-    "slug": slug.current,
-    publishedAt,
-    readTime,
-    excerpt,
-    tags,
-    "coverUrl": mainImage.asset->url,
-    mainImage {
-      alt,
-      caption,
+// Shared by the listing and detail queries. Body images carry their dimensions so they
+// can be rendered without layout shift.
+const POST_FIELDS = `
+  _id,
+  _updatedAt,
+  title,
+  "slug": slug.current,
+  publishedAt,
+  readTime,
+  excerpt,
+  tags,
+  "coverUrl": mainImage.asset->url,
+  "coverAlt": mainImage.alt,
+  body[]{
+    ...,
+    _type == "image" => {
+      ...,
       asset-> {
         _id,
-        url
-      }
-    },
-    body[]{
-      ...,
-      _type == "image" => {
-        ...,
-        asset-> {
-          _id,
-          url
-        }
+        url,
+        metadata { dimensions { width, height } }
       }
     }
   }
 `
 
+export const POSTS_QUERY = groq`
+  *[_type == "post" && defined(slug.current)] | order(publishedAt desc) {${POST_FIELDS}}
+`
+
 export const POST_BY_SLUG_OR_ID_QUERY = groq`
-  *[_type == "post" && (slug.current == $slugOrId || _id == $slugOrId)][0] {
-    _id,
-    title,
-    "slug": slug.current,
-    publishedAt,
-    readTime,
-    excerpt,
-    tags,
-    "coverUrl": mainImage.asset->url,
-    mainImage {
-      alt,
-      caption,
-      asset-> {
-        _id,
-        url
-      }
-    },
-    body[]{
-      ...,
-      _type == "image" => {
-        ...,
-        asset-> {
-          _id,
-          url
-        }
-      }
-    }
-  }
+  *[_type == "post" && (slug.current == $slugOrId || _id == $slugOrId)][0] {${POST_FIELDS}}
 `
 
 export const DESTINATIONS_QUERY = groq`
@@ -114,6 +86,7 @@ export const SITE_SETTINGS_QUERY = groq`
     description,
     heroHeadline,
     "heroImageUrl": heroImage.asset->url,
+    "heroImageAlt": heroImage.alt,
     aboutHeadline,
     aboutParagraph,
     "aboutImageTopRightUrl": aboutImageTopRight.asset->url,

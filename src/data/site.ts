@@ -11,6 +11,7 @@ export type SiteSettings = {
   description?: string
   heroHeadline?: string
   heroImageUrl?: string
+  heroImageAlt?: string
   aboutHeadline?: string
   aboutParagraph?: string
   aboutImageTopRightUrl?: string

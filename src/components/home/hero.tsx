@@ -1,6 +1,6 @@
 import Image from "next/image"
-import Link from "next/link"
 import { LogoMark, Wordmark } from "@/components/brand/logo"
+import { ContactButton } from "@/components/contact/contact-dialog"
 
 /*
  * Mirrors thenatureclub.in: the composition never reflows, it scales.
@@ -15,7 +15,7 @@ export function Hero({
   imageAlt,
 }: {
   headline: string
-  imageUrl: string
+  imageUrl?: string
   imageAlt?: string
 }) {
   return (
@@ -23,14 +23,17 @@ export function Hero({
       aria-labelledby="hero-heading"
       className="relative isolate h-[min(56.25vw,48rem)] w-full overflow-hidden bg-ink text-white"
     >
-      <Image
-        src={imageUrl}
-        alt={imageAlt ?? ""}
-        fill
-        preload
-        sizes="100vw"
-        className="-z-10 object-cover object-center"
-      />
+      {/* The hero photo comes only from Site Settings; without one the dark backdrop shows. */}
+      {imageUrl && (
+        <Image
+          src={imageUrl}
+          alt={imageAlt ?? ""}
+          fill
+          preload
+          sizes="100vw"
+          className="-z-10 object-cover object-center"
+        />
+      )}
       <div className="@container absolute inset-y-0 right-0 left-0 mx-auto max-w-360">
         {/* Keep both text corners legible over any photo; anchored to the composition, not the viewport. */}
         <div
@@ -52,12 +55,12 @@ export function Hero({
           <p className="font-display text-[clamp(0.8rem,2.25cqw+0.25rem,3.25rem)] leading-[1.2]">
             {headline}
           </p>
-          <Link
-            href="#contact"
+          <ContactButton
+            topic="Booking a tour"
             className="mt-[1.2cqw] inline-flex items-center rounded-full border border-white/90 px-[clamp(0.6rem,1cqw,1rem)] py-[clamp(0.2rem,0.45cqw,0.5rem)] text-[clamp(0.65rem,0.5rem+0.4cqw,0.95rem)] transition-[color,background-color,scale] duration-150 ease-out hover:bg-white hover:text-ink active:scale-[0.97]"
           >
             Book Now
-          </Link>
+          </ContactButton>
         </div>
       </div>
     </section>

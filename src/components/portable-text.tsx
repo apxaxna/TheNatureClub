@@ -1,4 +1,5 @@
 import React from "react"
+import Image from "next/image"
 
 export type PortableTextSpan = {
   _key: string
@@ -22,7 +23,7 @@ export type PortableTextBlock = {
   markDefs?: PortableTextMarkDef[]
   listItem?: "bullet" | "number"
   level?: number
-  asset?: { url: string }
+  asset?: { url: string; metadata?: { dimensions?: { width: number; height: number } } }
   url?: string
   alt?: string
   caption?: string
@@ -38,10 +39,11 @@ export type PortableTextComponents = {
 
 export const defaultShadcnTypographyComponents: PortableTextComponents = {
   block: {
+    // The story title is the page's only <h1>, so a body "h1" drops to a section heading.
     h1: ({ children }) => (
-      <h1 className="scroll-m-20 font-serif text-3xl font-bold sm:text-4xl text-ink mt-12 mb-4">
+      <h2 className="scroll-m-20 font-serif text-3xl font-bold sm:text-4xl text-ink mt-12 mb-4">
         {children}
-      </h1>
+      </h2>
     ),
     h2: ({ children }) => (
       <h2 className="scroll-m-20 font-serif pt-4 text-2xl sm:text-3xl font-bold tracking-tight text-ink first:mt-0 mb-4">
@@ -110,22 +112,42 @@ export const defaultShadcnTypographyComponents: PortableTextComponents = {
     },
   },
   types: {
-    image: ({ value }) => (
-      <figure className="my-10 space-y-2">
-        <div className="overflow-hidden rounded-xl ring-1 ring-ink/10">
-          <img
-            src={value?.asset?.url || value?.url}
-            alt={value?.alt || ""}
-            className="size-full object-cover"
-          />
-        </div>
-        {value?.caption && (
-          <figcaption className="text-center text-xs text-stone italic">
-            {value.caption}
-          </figcaption>
-        )}
-      </figure>
-    ),
+    image: ({ value }) => {
+      const dimensions = value?.asset?.metadata?.dimensions
+      const src = value?.asset?.url
+      return (
+        <figure className="my-10 space-y-2">
+          <div className="overflow-hidden rounded-xl ring-1 ring-ink/10">
+            {src ? (
+              // Sanity uploads go through next/image (resized, lazy, no layout shift).
+              <Image
+                src={src}
+                alt={value?.alt || ""}
+                width={dimensions?.width ?? 1440}
+                height={dimensions?.height ?? 960}
+                sizes="(max-width: 720px) 100vw, 720px"
+                className="h-auto w-full object-cover"
+              />
+            ) : (
+              // An external URL may be on any host, so it can't go through the image optimizer.
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={value?.url}
+                alt={value?.alt || ""}
+                loading="lazy"
+                decoding="async"
+                className="size-full object-cover"
+              />
+            )}
+          </div>
+          {value?.caption && (
+            <figcaption className="text-center text-xs text-stone italic">
+              {value.caption}
+            </figcaption>
+          )}
+        </figure>
+      )
+    },
   },
 }
 

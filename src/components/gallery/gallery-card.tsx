@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import Image from "next/image";
 import { GalleryItemInstance } from "@/types/gallery";
 import { Play, Pause, Volume2, VolumeX, Maximize2 } from "lucide-react";
 
@@ -65,8 +66,7 @@ export function GalleryCard({ item, onOpenLightbox }: GalleryCardProps) {
   return (
     <div
       ref={cardRef}
-      onClick={() => onOpenLightbox(item)}
-      className="group relative w-full cursor-pointer overflow-hidden rounded-sm border border-white/5 bg-white/5 transition-[border-color,box-shadow] duration-300 hover:border-white/25 hover:shadow-2xl hover:shadow-black/60"
+      className="group relative w-full overflow-hidden rounded-sm border border-white/5 bg-white/5 transition-[border-color,box-shadow] duration-300 hover:border-white/25 hover:shadow-2xl hover:shadow-black/60"
       style={{
         aspectRatio: item.aspectRatio || 1,
       }}
@@ -89,6 +89,14 @@ export function GalleryCard({ item, onOpenLightbox }: GalleryCardProps) {
       >
         <div className="absolute inset-0 animate-pulse bg-linear-to-r from-transparent via-white/4 to-transparent" />
       </div>
+
+      {/* Opens the lightbox; sits under the video controls so those stay clickable. */}
+      <button
+        type="button"
+        onClick={() => onOpenLightbox(item)}
+        aria-label={`View ${item.title || (isVideo ? "video" : "photo")} full size`}
+        className="absolute inset-0 z-5 cursor-pointer focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-gold"
+      />
 
       {/* Video Element */}
       {isVideo ? (
@@ -127,11 +135,11 @@ export function GalleryCard({ item, onOpenLightbox }: GalleryCardProps) {
         </>
       ) : (
         /* Image Element */
-        <img
+        <Image
           src={item.src}
           alt={item.alt || item.title || "Gallery image"}
-          loading="lazy"
-          decoding="async"
+          fill
+          sizes="(max-width: 519px) 100vw, (max-width: 859px) 50vw, (max-width: 1399px) 33vw, 25vw"
           onLoad={() => setIsLoaded(true)}
           className={`size-full object-cover transition-[opacity,scale] duration-700 ease-out-strong motion-safe:group-hover:scale-[1.03] ${
             isLoaded ? "opacity-100" : "opacity-0"
@@ -143,9 +151,9 @@ export function GalleryCard({ item, onOpenLightbox }: GalleryCardProps) {
       <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/85 via-black/30 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100">
         <div className="absolute inset-x-0 bottom-0 p-4 transition-transform duration-300 translate-y-2 group-hover:translate-y-0">
           {item.title && (
-            <h3 className="text-sm font-semibold tracking-wide text-white drop-shadow-md sm:text-base">
+            <h2 className="text-sm font-semibold tracking-wide text-white drop-shadow-md sm:text-base">
               {item.title}
-            </h3>
+            </h2>
           )}
           {item.caption && item.caption !== item.title && (
             <p className="mt-1 line-clamp-2 text-xs text-white/70 drop-shadow">
@@ -156,7 +164,7 @@ export function GalleryCard({ item, onOpenLightbox }: GalleryCardProps) {
 
         {/* Expand Icon in top right */}
         <div className="absolute top-3 right-3 flex size-8 items-center justify-center rounded-full border border-white/15 bg-black/60 text-white/90 backdrop-blur-md opacity-0 transition-all duration-300 group-hover:opacity-100">
-          <Maximize2 className="size-4" />
+          <Maximize2 className="size-4" aria-hidden="true" />
         </div>
       </div>
     </div>

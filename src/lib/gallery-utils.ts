@@ -113,11 +113,6 @@ export function normalizeSanityGalleryItems(rawItems: SanityGalleryRawItem[]): G
     }
   }
 
-  // If Sanity only has 1 or 2 items, blend with fallback so the infinite grid is visually rich
-  if (items.length < 6) {
-    return [...items];
-  }
-
   return items;
 }
 

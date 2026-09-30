@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import Image from "next/image"
-import { notFound } from "next/navigation"
+import { notFound, permanentRedirect } from "next/navigation"
 import { format } from "date-fns"
 
 import {
@@ -10,7 +10,7 @@ import {
 import { PortableText } from "@/components/portable-text"
 import { JsonLd } from "@/components/json-ld"
 import { PageBreadcrumb } from "@/components/page-breadcrumb"
-import { ORGANIZATION_ID, WEBSITE_ID, absoluteUrl } from "@/lib/seo"
+import { ORGANIZATION_ID, WEBSITE_ID, absoluteUrl, pageOpenGraph, shareImage, pageAlternates } from "@/lib/seo"
 
 export const revalidate = 60
 
@@ -40,18 +40,18 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title: article.title,
     description: article.excerpt,
     keywords: article.tags,
-    alternates: { canonical: path },
-    openGraph: {
+    alternates: pageAlternates(path),
+    openGraph: pageOpenGraph({
+      path,
       type: "article",
-      url: path,
       title: article.title,
       description: article.excerpt,
+      image: article.coverUrl,
+      imageAlt: article.coverAlt,
       publishedTime: article.createdAt,
+      modifiedTime: article.updatedAt,
       tags: article.tags,
-      ...(article.coverUrl && {
-        images: [{ url: `${article.coverUrl}?w=1200&h=630&fit=crop&auto=format`, width: 1200, height: 630 }],
-      }),
-    },
+    }),
   }
 }
 
@@ -63,6 +63,11 @@ export default async function BlogDetailPage({ params }: PageProps) {
     notFound()
   }
 
+  // One URL per story: links that use the document id land on the slug URL.
+  if (article.slug && id !== article.slug) {
+    permanentRedirect(`/blogs/${article.slug}`)
+  }
+
   const path = `/blogs/${article.slug || article.id}`
   const jsonLd = [
     {
@@ -72,7 +77,10 @@ export default async function BlogDetailPage({ params }: PageProps) {
       headline: article.title,
       description: article.excerpt,
       datePublished: article.createdAt,
-      ...(article.coverUrl && { image: article.coverUrl }),
+      dateModified: article.updatedAt,
+      ...(article.coverUrl && {
+        image: { "@type": "ImageObject", ...shareImage(article.coverUrl) },
+      }),
       keywords: article.tags.join(", "),
       inLanguage: "en-IN",
       author: { "@id": ORGANIZATION_ID },
@@ -119,7 +127,7 @@ export default async function BlogDetailPage({ params }: PageProps) {
         <figure className="relative mt-12 aspect-video overflow-hidden bg-line">
           <Image
             src={article.coverUrl}
-            alt=""
+            alt={article.coverAlt ?? ""}
             fill
             preload
             sizes="(max-width: 720px) 100vw, 720px"

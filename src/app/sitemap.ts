@@ -7,6 +7,10 @@ export const revalidate = 3600
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [articles, exhibits] = await Promise.all([getAllArticles(), getExhibits()])
+  const latestStory = articles.reduce<string | undefined>(
+    (latest, a) => (!latest || a.updatedAt > latest ? a.updatedAt : latest),
+    undefined
+  )
 
   return [
     {
@@ -17,11 +21,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       images: exhibits.flatMap((e) => e.photos.filter((p) => !p.placeholder).map((p) => p.imageUrl)),
     },
     { url: absoluteUrl("/destinations"), changeFrequency: "monthly", priority: 0.9 },
-    { url: absoluteUrl("/blogs"), changeFrequency: "weekly", priority: 0.8 },
+    { url: absoluteUrl("/blogs"), lastModified: latestStory, changeFrequency: "weekly", priority: 0.8 },
     { url: absoluteUrl("/gallery"), changeFrequency: "weekly", priority: 0.6 },
     ...articles.map((a) => ({
       url: absoluteUrl(`/blogs/${a.slug || a.id}`),
-      lastModified: a.createdAt,
+      lastModified: a.updatedAt,
       changeFrequency: "monthly" as const,
       priority: 0.7,
       ...(a.coverUrl && { images: [a.coverUrl] }),

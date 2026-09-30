@@ -6,16 +6,13 @@ import { Testimonials } from "@/components/home/testimonials";
 import { JsonLd } from "@/components/json-ld";
 import { getExhibits } from "@/data/exhibits";
 import { getSiteSettings, getTestimonials } from "@/data/site";
-import { ORGANIZATION_ID, absoluteUrl } from "@/lib/seo";
+import { ORGANIZATION_ID, absoluteUrl, pageAlternates } from "@/lib/seo";
 
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  alternates: { canonical: "/" },
+  alternates: pageAlternates("/"),
 };
-
-const FALLBACK_HERO_IMAGE =
-  "https://cdn.sanity.io/images/gnfni9vb/production/8d8c6ebc4077be17d4d6742db469483e5b26a83a-6000x4000.jpg";
 
 const FALLBACK_INTRO =
   "We are into landscape and travel photography, specialising in capturing the nuances of different seasons.\n\nWe have traveled extensively, photographing the world's most breathtaking views.";
@@ -55,7 +52,8 @@ export default async function HomePage() {
       {exhibitsJsonLd.length > 0 && <JsonLd data={exhibitsJsonLd} />}
       <Hero
         headline={settings?.heroHeadline || "Landscape & Travel Photography Tours"}
-        imageUrl={settings?.heroImageUrl || FALLBACK_HERO_IMAGE}
+        imageUrl={settings?.heroImageUrl}
+        imageAlt={settings?.heroImageAlt}
       />
       <Intro
         heading={settings?.aboutHeadline || "Hi, What are we into?"}

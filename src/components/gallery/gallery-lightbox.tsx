@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useCallback } from "react";
+import Image from "next/image";
 import { GalleryItemInstance } from "@/types/gallery";
 import { X, ChevronLeft, ChevronRight, ExternalLink } from "lucide-react";
 
@@ -55,6 +56,7 @@ export function GalleryLightbox({ item, items, onClose, onSelect }: GalleryLight
     <div
       role="dialog"
       aria-modal="true"
+      aria-label={item.title || (isVideo ? "Video" : "Photo")}
       onClick={onClose}
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-xl animate-in fade-in duration-200"
     >
@@ -77,6 +79,7 @@ export function GalleryLightbox({ item, items, onClose, onSelect }: GalleryLight
             target="_blank"
             rel="noopener noreferrer"
             title="Open original in new tab"
+            aria-label="Open original in new tab"
             className="flex size-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/70 transition hover:bg-white/15 hover:text-white"
           >
             <ExternalLink className="size-4" />
@@ -134,9 +137,12 @@ export function GalleryLightbox({ item, items, onClose, onSelect }: GalleryLight
               className="max-h-[75vh] w-auto max-w-full rounded-2xl object-contain"
             />
           ) : (
-            <img
+            <Image
               src={item.src}
               alt={item.alt || item.title || "Gallery preview"}
+              width={item.width ?? 1200}
+              height={item.height ?? 900}
+              sizes="92vw"
               className="max-h-[75vh] w-auto max-w-full rounded-2xl object-contain"
             />
           )}
