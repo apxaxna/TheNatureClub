@@ -104,7 +104,7 @@ export function MasonryGallery({ initialSanityItems = [] }: MasonryGalleryProps)
 
   return (
     <main className="w-full bg-ink text-white">
-      <section className="px-4 py-20 sm:px-8 lg:py-24">
+      <section className="px-gutter py-section">
         <div className="relative z-10 mx-auto w-full">
           <PageBreadcrumb
             tone="dark"
@@ -117,7 +117,7 @@ export function MasonryGallery({ initialSanityItems = [] }: MasonryGalleryProps)
           <PageHeading
             title="Gallery"
             subtitle="Moments captured from the wild"
-            className="mb-14"
+            className="mb-[clamp(2.5rem,5vw,4rem)]"
           />
 
           {baseItems.length === 0 ? (

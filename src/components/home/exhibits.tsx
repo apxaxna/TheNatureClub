@@ -1,5 +1,6 @@
 import Image from "next/image"
 import type { Exhibit, ExhibitPhoto } from "@/data/exhibits"
+import { Reveal } from "@/components/reveal"
 import { cn } from "@/lib/utils"
 
 // Photos run up to three per row; a "wide" photo takes a row to itself.
@@ -31,16 +32,26 @@ const ROW_LAYOUT: Record<number, { grid: string; aspect: string; sizes: string }
   3: { grid: "grid-cols-3", aspect: "aspect-[4/5]", sizes: "(min-width: 1440px) 420px, 31vw" },
 }
 
-function Photo({ photo, aspect, sizes }: { photo: ExhibitPhoto; aspect: string; sizes: string }) {
+function Photo({
+  photo,
+  aspect,
+  sizes,
+  delay,
+}: {
+  photo: ExhibitPhoto
+  aspect: string
+  sizes: string
+  delay: number
+}) {
   return (
-    <figure>
+    <Reveal as="figure" delay={delay} className="group">
       <div className={cn("relative overflow-hidden bg-line", aspect)}>
         <Image
           src={photo.imageUrl}
           alt={photo.alt}
           fill
           sizes={sizes}
-          className="object-cover transition-transform duration-700 ease-out-strong motion-safe:hover:scale-[1.03]"
+          className="object-cover transition-transform duration-700 ease-out-strong motion-safe:group-hover:scale-[1.03]"
         />
       </div>
       <figcaption className="mt-[0.9cqw] leading-tight">
@@ -51,7 +62,7 @@ function Photo({ photo, aspect, sizes }: { photo: ExhibitPhoto; aspect: string; 
           </p>
         )}
       </figcaption>
-    </figure>
+    </Reveal>
   )
 }
 
@@ -67,12 +78,13 @@ export function Exhibits({ items }: { items: Exhibit[] }) {
       >
         <div className="@container mx-auto max-w-360">
           <div className="px-[clamp(0.75rem,3.6cqw,6rem)] py-[clamp(1.5rem,5cqw,5.5rem)]">
-            <h2
+            <Reveal
+              as="h2"
               id={headingId}
               className="text-center font-display text-[clamp(1.05rem,3.4cqw,3.25rem)]"
             >
               {exhibit.title}
-            </h2>
+            </Reveal>
             {exhibit.description && <p className="sr-only">{exhibit.description}</p>}
 
             <div className="mt-[clamp(1rem,4cqw,4rem)] space-y-[clamp(1.25rem,4.5cqw,4.5rem)]">
@@ -80,8 +92,14 @@ export function Exhibits({ items }: { items: Exhibit[] }) {
                 const layout = ROW_LAYOUT[row.length]
                 return (
                   <div key={row[0].id} className={cn("grid gap-[clamp(0.75rem,3.2cqw,3.5rem)]", layout.grid)}>
-                    {row.map((photo) => (
-                      <Photo key={photo.id} photo={photo} aspect={layout.aspect} sizes={layout.sizes} />
+                    {row.map((photo, j) => (
+                      <Photo
+                        key={photo.id}
+                        photo={photo}
+                        aspect={layout.aspect}
+                        sizes={layout.sizes}
+                        delay={j * 80}
+                      />
                     ))}
                   </div>
                 )

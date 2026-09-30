@@ -119,7 +119,7 @@ export function GalleryCard({ item, onOpenLightbox }: GalleryCardProps) {
               type="button"
               onClick={togglePlay}
               aria-label={isPlaying ? "Pause video" : "Play video"}
-              className="flex size-7 items-center justify-center rounded-full border border-white/20 bg-black/70 text-white/90 backdrop-blur-md transition-transform hover:scale-110 active:scale-95"
+              className="flex size-7 items-center justify-center rounded-full border border-white/20 bg-black/70 text-white/90 backdrop-blur-md transition-[scale] duration-150 ease-out hover:scale-110 active:scale-95"
             >
               {isPlaying ? <Pause className="size-3.5" /> : <Play className="size-3.5 fill-current ml-0.5" />}
             </button>
@@ -127,7 +127,7 @@ export function GalleryCard({ item, onOpenLightbox }: GalleryCardProps) {
               type="button"
               onClick={toggleMute}
               aria-label={isMuted ? "Unmute audio" : "Mute audio"}
-              className="flex size-7 items-center justify-center rounded-full border border-white/20 bg-black/70 text-white/90 backdrop-blur-md transition-transform hover:scale-110 active:scale-95"
+              className="flex size-7 items-center justify-center rounded-full border border-white/20 bg-black/70 text-white/90 backdrop-blur-md transition-[scale] duration-150 ease-out hover:scale-110 active:scale-95"
             >
               {isMuted ? <VolumeX className="size-3.5 text-white/70" /> : <Volume2 className="size-3.5 text-gold" />}
             </button>
@@ -149,7 +149,7 @@ export function GalleryCard({ item, onOpenLightbox }: GalleryCardProps) {
 
       {/* Hover Overlay with Caption & Title */}
       <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/85 via-black/30 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-        <div className="absolute inset-x-0 bottom-0 p-4 transition-transform duration-300 translate-y-2 group-hover:translate-y-0">
+        <div className="absolute inset-x-0 bottom-0 p-4 transition-transform duration-300 ease-out-strong translate-y-2 group-hover:translate-y-0">
           {item.title && (
             <h2 className="text-sm font-semibold tracking-wide text-white drop-shadow-md sm:text-base">
               {item.title}
@@ -163,7 +163,7 @@ export function GalleryCard({ item, onOpenLightbox }: GalleryCardProps) {
         </div>
 
         {/* Expand Icon in top right */}
-        <div className="absolute top-3 right-3 flex size-8 items-center justify-center rounded-full border border-white/15 bg-black/60 text-white/90 backdrop-blur-md opacity-0 transition-all duration-300 group-hover:opacity-100">
+        <div className="absolute top-3 right-3 flex size-8 scale-90 items-center justify-center rounded-full border border-white/15 bg-black/60 text-white/90 opacity-0 backdrop-blur-md transition-[opacity,scale] duration-200 ease-out-strong group-hover:scale-100 group-hover:opacity-100">
           <Maximize2 className="size-4" aria-hidden="true" />
         </div>
       </div>

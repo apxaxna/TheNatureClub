@@ -52,16 +52,21 @@ export default async function BlogsPage() {
   ];
 
   return (
-    <main className="px-[clamp(1rem,4vw,6rem)] py-[clamp(2.5rem,7vw,6rem)]">
+    <main className="px-gutter py-section">
       <JsonLd data={jsonLd} />
       <PageBreadcrumb
-        className="mb-8"
+        // Aligned to the grid's edge, not the viewport's, on wide screens.
+        className="mx-auto mb-8 max-w-400"
         items={[
           { name: "Home", path: "/" },
           { name: "Stories", path: "/blogs" },
         ]}
       />
-      <PageHeading title="Stories" subtitle="Field notes from the wild" className="mb-14" />
+      <PageHeading
+        title="Stories"
+        subtitle="Field notes from the wild"
+        className="mx-auto mb-[clamp(2.5rem,5vw,4rem)] max-w-400"
+      />
       <ArticleGrid articles={articles} />
     </main>
   );

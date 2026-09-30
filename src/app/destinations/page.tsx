@@ -38,7 +38,7 @@ const priceFormat = new Intl.NumberFormat("en-US", {
 function DestinationCard({ item }: { item: Destination }) {
   const headingId = `destination-${item.slug ?? item.id}`
   return (
-    <article aria-labelledby={headingId} className="flex h-full flex-col">
+    <article aria-labelledby={headingId} className="group flex h-full flex-col">
       <div className="relative aspect-3/2 overflow-hidden bg-line">
         {item.imageUrl && (
           <Image
@@ -46,7 +46,7 @@ function DestinationCard({ item }: { item: Destination }) {
             alt={item.imageAlt || item.name}
             fill
             sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            className="object-cover"
+            className="object-cover transition-transform duration-700 ease-out-strong motion-safe:group-hover:scale-[1.03]"
           />
         )}
       </div>
@@ -62,24 +62,29 @@ function DestinationCard({ item }: { item: Destination }) {
       {item.description && (
         <p className="mt-3 line-clamp-3 text-[0.95rem] leading-relaxed text-ink/75">{item.description}</p>
       )}
-      <dl className="mt-auto pt-4 text-slate">
-        {(item.maxGuests || item.bedsDescription) && (
-          <div>
-            <dt className="sr-only">Stay</dt>
-            <dd>
-              {[item.maxGuests && `Max ${item.maxGuests} Guests`, item.bedsDescription]
-                .filter(Boolean)
-                .join(" / ")}
-            </dd>
-          </div>
-        )}
-        {item.pricePerNight != null && (
-          <div className="mt-1 font-bold">
-            <dt className="sr-only">Price</dt>
-            <dd>from {priceFormat.format(item.pricePerNight)}/night</dd>
-          </div>
-        )}
-      </dl>
+      {/* Pinned to the card's foot so stay details line up across a row. */}
+      {(item.maxGuests || item.bedsDescription || item.pricePerNight != null) && (
+        <div className="mt-auto pt-5">
+          <dl className="border-t border-line pt-4 text-sm text-slate sm:text-base">
+            {(item.maxGuests || item.bedsDescription) && (
+              <div>
+                <dt className="sr-only">Stay</dt>
+                <dd>
+                  {[item.maxGuests && `Max ${item.maxGuests} Guests`, item.bedsDescription]
+                    .filter(Boolean)
+                    .join(" / ")}
+                </dd>
+              </div>
+            )}
+            {item.pricePerNight != null && (
+              <div className="mt-1 font-bold">
+                <dt className="sr-only">Price</dt>
+                <dd>from {priceFormat.format(item.pricePerNight)}/night</dd>
+              </div>
+            )}
+          </dl>
+        </div>
+      )}
     </article>
   );
 }
@@ -129,7 +134,7 @@ export default async function DestinationsPage() {
   ];
 
   return (
-    <main className="bg-white px-[clamp(1rem,4vw,6rem)] py-[clamp(2.5rem,7vw,6rem)]">
+    <main className="bg-white px-gutter py-section">
       <JsonLd data={jsonLd} />
       <PageBreadcrumb
         className="mx-auto mb-8 max-w-400"
@@ -141,15 +146,20 @@ export default async function DestinationsPage() {
       <PageHeading
         title="Destinations"
         subtitle="Where we take our photography and wildlife tours"
-        className="mb-[clamp(2rem,5vw,4rem)] [&_h1]:font-serif [&_h1]:text-slate"
+        className="mx-auto mb-[clamp(2.5rem,5vw,4rem)] max-w-400 [&_h1]:font-serif [&_h1]:text-slate"
       />
 
       {destinations.length === 0 ? (
         <p className="py-16 text-center text-stone">Destinations are coming soon.</p>
       ) : (
-        <ul className="mx-auto grid max-w-400 grid-cols-1 gap-x-[clamp(1rem,3vw,2.5rem)] gap-y-12 min-[480px]:grid-cols-2 lg:grid-cols-3">
-          {destinations.map((item) => (
-            <li key={item.id}>
+        <ul className="mx-auto grid max-w-400 grid-cols-1 gap-x-[clamp(1rem,3vw,2.5rem)] gap-y-[clamp(2.5rem,5vw,3.5rem)] min-[480px]:grid-cols-2 lg:grid-cols-3">
+          {destinations.map((item, i) => (
+            // Cards cascade in on load (CSS only, so nothing waits on JavaScript); the stagger is capped.
+            <li
+              key={item.id}
+              style={{ transitionDelay: `${Math.min(i, 5) * 60}ms` }}
+              className="transition-[opacity,translate] duration-500 ease-out-strong starting:opacity-0 motion-safe:starting:translate-y-3"
+            >
               <DestinationCard item={item} />
             </li>
           ))}

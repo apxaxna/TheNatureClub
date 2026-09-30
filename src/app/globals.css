@@ -28,6 +28,40 @@
 
   /* Stronger than the built-in ease-out: responds instantly, settles softly. */
   --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
+  /* For things already on screen that travel or grow (reveals, drawn lines). */
+  --ease-in-out-strong: cubic-bezier(0.77, 0, 0.175, 1);
+  /* iOS-like sheet curve, for panels that slide over the page. */
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+
+  /*
+   * Shared page rhythm: every page uses the same side gutter and vertical section padding,
+   * so content edges line up from page to page (px-gutter, py-section).
+   */
+  --spacing-gutter: clamp(1rem, 4vw, 6rem);
+  --spacing-section: clamp(2.5rem, 7vw, 6rem);
+
+  /* One-off entrance for content already in view on load (heroes, page headings). */
+  --animate-enter: enter 800ms var(--ease-out-strong) both;
+  --animate-rule: rule 700ms var(--ease-in-out-strong) both;
+  --animate-settle: settle 1800ms var(--ease-out-strong) both;
+
+  @keyframes enter {
+    from {
+      opacity: 0;
+      translate: 0 0.75rem;
+      filter: blur(4px);
+    }
+  }
+  @keyframes settle {
+    from {
+      scale: 1.06;
+    }
+  }
+  @keyframes rule {
+    from {
+      scale: 0 1;
+    }
+  }
 }
 
 :root {
@@ -39,17 +73,199 @@
     @apply border-line;
   }
   html {
-    @apply scroll-smooth font-sans;
+    /* No CSS scroll-behavior: Lenis owns smooth scrolling (and anchor links). */
+    @apply font-sans;
     scroll-padding-top: var(--header-h);
   }
   body {
     @apply bg-cream text-ink antialiased;
   }
-  /* Freeze the page behind an open modal <dialog>. */
-  html:has(dialog[open]) {
+  /* Freeze the page behind an open modal (<dialog>s and the gallery lightbox); Lenis pauses too. */
+  html:has(dialog[open], [role="dialog"][aria-modal="true"]) {
     overflow: hidden;
   }
   ::selection {
     @apply bg-gold/40;
+  }
+}
+
+/* Reduced motion keeps the fade (it aids comprehension) and drops the movement. */
+@media (prefers-reduced-motion: reduce) {
+  .animate-enter {
+    animation-name: fade;
+  }
+  .animate-rule {
+    animation: none;
+  }
+}
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+
+/*
+ * Scroll reveal, driven by <Reveal>: content below the fold eases in once as it arrives.
+ * Only hidden when scripts run, so the page never depends on JS to show its content.
+ */
+[data-reveal] {
+  transition:
+    opacity 700ms var(--ease-out-strong),
+    translate 700ms var(--ease-out-strong),
+    clip-path 1100ms var(--ease-in-out-strong);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+@media (scripting: enabled) {
+  [data-reveal]:not([data-revealed]) {
+    opacity: 0;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    [data-reveal="rise"]:not([data-revealed]) {
+      translate: 0 1rem;
+    }
+    /* Photos unveil top to bottom rather than fading, like a print being pulled. */
+    [data-reveal="unveil"]:not([data-revealed]) {
+      opacity: 1;
+      clip-path: inset(0 0 100% 0);
+    }
+  }
+}
+
+/* Line art that draws itself in (the logo on the hero, the sent-message check). */
+@media (prefers-reduced-motion: no-preference) {
+  .draw-in :is(path, circle) {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: draw 1400ms var(--ease-in-out-strong) forwards;
+    animation-delay: var(--draw-delay, 0ms);
+  }
+  .draw-in :nth-child(2) {
+    --draw-delay: 120ms;
+  }
+  .draw-in :nth-child(n + 3) {
+    --draw-delay: 360ms;
+  }
+}
+@keyframes draw {
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Scroll-linked touches; browsers without scroll timelines simply go without. */
+.reading-progress {
+  display: none;
+}
+@supports (animation-timeline: scroll()) {
+  /* The bar lifts off the page once you start scrolling. */
+  .header-elevate {
+    animation: header-elevate linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 6rem;
+  }
+  /* On the home page the bar's logo arrives as the hero's own lockup scrolls away. */
+  .header-logo-reveal {
+    animation: header-logo linear both;
+    animation-timeline: scroll(root);
+    animation-range: calc(min(56.25vw, 48rem) - 8rem) calc(min(56.25vw, 48rem) - 4rem);
+  }
+  .reading-progress {
+    display: block;
+    transform-origin: 0 50%;
+    animation: grow-x linear both;
+    animation-timeline: scroll(root);
+  }
+}
+@keyframes header-elevate {
+  to {
+    box-shadow: 0 6px 20px -12px rgb(35 31 32 / 0.25);
+  }
+}
+@keyframes header-logo {
+  from {
+    opacity: 0;
+    visibility: hidden;
+    translate: 0 -0.25rem;
+  }
+  to {
+    opacity: 1;
+    visibility: visible;
+    translate: 0 0;
+  }
+}
+@keyframes grow-x {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+/*
+ * Long-form story body. One vertical rhythm, with headings sitting closer to the text
+ * they introduce than to the section before them.
+ */
+.prose-flow > * + * {
+  margin-top: 1.5rem;
+}
+.prose-flow > h2 {
+  margin-top: 3rem;
+}
+.prose-flow > :is(h3, h4) {
+  margin-top: 2.25rem;
+}
+.prose-flow > :is(figure, blockquote) {
+  margin-block: 2.5rem;
+}
+.prose-flow > :is(h2, h3, h4) + * {
+  margin-top: 0.75rem;
+}
+.prose-flow > :first-child {
+  margin-top: 0;
+}
+
+/*
+ * Mobile menu panel: slides in from the right edge, then its contents rise in one after another.
+ * Closing mirrors this in mobile-menu.tsx (same 500ms and curve), slid out before close().
+ */
+.menu-panel {
+  translate: 100% 0;
+}
+.menu-panel[open] {
+  translate: 0 0;
+  transition: translate 500ms var(--ease-drawer);
+  @starting-style {
+    translate: 100% 0;
+  }
+}
+.menu-panel[open] .menu-item {
+  transition:
+    opacity 500ms var(--ease-out-strong),
+    translate 500ms var(--ease-out-strong);
+  transition-delay: calc(150ms + var(--i, 0) * 50ms);
+  @starting-style {
+    opacity: 0;
+    translate: 0 0.75rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .menu-panel,
+  .menu-panel[open] {
+    translate: 0 0;
+    opacity: 0;
+  }
+  .menu-panel[open] {
+    opacity: 1;
+    transition: opacity 200ms ease;
+    @starting-style {
+      opacity: 0;
+    }
+  }
+  .menu-panel[open] .menu-item {
+    transition: none;
   }
 }

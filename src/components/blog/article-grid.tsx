@@ -19,7 +19,7 @@ export function ArticleGrid({ articles }: { articles: Article[] }) {
 
   return (
     <>
-      <ul className="mx-auto grid max-w-400 grid-cols-1 gap-x-[clamp(1rem,3vw,2.5rem)] gap-y-12 min-[480px]:grid-cols-2 lg:grid-cols-3">
+      <ul className="mx-auto grid max-w-400 grid-cols-1 gap-x-[clamp(1rem,3vw,2.5rem)] gap-y-[clamp(2.5rem,5vw,3.5rem)] min-[480px]:grid-cols-2 lg:grid-cols-3">
         {articles.slice(0, visible).map((article, i) => (
           // Each batch (first load or "Load more") cascades in rather than popping in at once.
           <li
@@ -28,7 +28,7 @@ export function ArticleGrid({ articles }: { articles: Article[] }) {
             className="transition-[opacity,translate] duration-500 ease-out-strong starting:opacity-0 motion-safe:starting:translate-y-3"
           >
             <article className="group">
-              <Link href={`/blogs/${article.slug || article.id}`} className="block">
+              <Link href={`/blogs/${article.slug || article.id}`} className="block active:scale-[0.99] transition-transform duration-150 ease-out">
                 <div className="relative aspect-3/2 overflow-hidden bg-line">
                   {article.coverUrl && (
                     <Image
@@ -47,11 +47,12 @@ export function ArticleGrid({ articles }: { articles: Article[] }) {
                     {format(new Date(article.createdAt), "MMM d, yyyy")}
                   </time>
                 </div>
-                <h2 className="mt-2 font-serif text-xl leading-snug font-bold text-balance group-hover:underline group-hover:underline-offset-4">
+                {/* The underline fades in (rather than snapping on), and wraps with multi-line titles. */}
+                <h2 className="mt-2 font-serif text-xl leading-snug font-bold text-balance underline decoration-transparent decoration-1 underline-offset-4 transition-[text-decoration-color] duration-200 group-hover:decoration-gold">
                   {article.title}
                 </h2>
                 {article.excerpt && (
-                  <p className="mt-2 line-clamp-3 text-ink/75">{article.excerpt}</p>
+                  <p className="mt-2 line-clamp-3 leading-relaxed text-ink/75">{article.excerpt}</p>
                 )}
               </Link>
             </article>
@@ -60,7 +61,7 @@ export function ArticleGrid({ articles }: { articles: Article[] }) {
       </ul>
 
       {visible < articles.length && (
-        <div className="mt-16 flex justify-center">
+        <div className="mt-[clamp(3rem,6vw,4.5rem)] flex justify-center">
           <button
             type="button"
             onClick={() => setVisible((v) => v + PAGE_SIZE)}
