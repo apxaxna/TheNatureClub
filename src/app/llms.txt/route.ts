@@ -28,6 +28,7 @@ export async function GET() {
     `- [Destinations](${absoluteUrl("/destinations")}): destinations we guide, with stay details and prices`,
     `- [Stories](${absoluteUrl("/blogs")}): field notes from our tours`,
     `- [Gallery](${absoluteUrl("/gallery")}): photographs and short films`,
+    `- [Stories feed](${absoluteUrl("/feed.xml")}): RSS feed of new stories`,
     "",
     "## Destinations",
     ...destinations.map((d) =>

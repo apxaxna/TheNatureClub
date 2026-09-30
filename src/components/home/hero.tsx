@@ -15,7 +15,7 @@ export function Hero({
   imageAlt,
 }: {
   headline: string
-  imageUrl: string
+  imageUrl?: string
   imageAlt?: string
 }) {
   return (
@@ -23,14 +23,17 @@ export function Hero({
       aria-labelledby="hero-heading"
       className="relative isolate h-[min(56.25vw,48rem)] w-full overflow-hidden bg-ink text-white"
     >
-      <Image
-        src={imageUrl}
-        alt={imageAlt ?? ""}
-        fill
-        preload
-        sizes="100vw"
-        className="-z-10 object-cover object-center"
-      />
+      {/* The hero photo comes only from Site Settings; without one the dark backdrop shows. */}
+      {imageUrl && (
+        <Image
+          src={imageUrl}
+          alt={imageAlt ?? ""}
+          fill
+          preload
+          sizes="100vw"
+          className="-z-10 object-cover object-center"
+        />
+      )}
       <div className="@container absolute inset-y-0 right-0 left-0 mx-auto max-w-360">
         {/* Keep both text corners legible over any photo; anchored to the composition, not the viewport. */}
         <div

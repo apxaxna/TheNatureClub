@@ -1,20 +1,30 @@
 import type { Metadata } from "next";
+import { getSiteSettings } from "@/data/site";
 import { ArticleGrid } from "@/components/blog/article-grid";
 import { PageHeading } from "@/components/page-heading";
 import { JsonLd } from "@/components/json-ld";
 import { getSanityPosts } from "@/data/articles";
 import { PageBreadcrumb } from "@/components/page-breadcrumb";
-import { ORGANIZATION_ID, absoluteUrl } from "@/lib/seo";
+import { ORGANIZATION_ID, absoluteUrl, pageOpenGraph, pageAlternates } from "@/lib/seo";
 
 const DESCRIPTION =
   "Field notes and stories from our wildlife and photography tours across India — tiger tracking, birding, monsoon forests and more.";
 
-export const metadata: Metadata = {
-  title: "Stories",
-  description: DESCRIPTION,
-  alternates: { canonical: "/blogs" },
-  openGraph: { url: "/blogs", title: "Stories", description: DESCRIPTION },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSiteSettings();
+  return {
+    title: "Stories",
+    description: DESCRIPTION,
+    alternates: pageAlternates("/blogs"),
+    openGraph: pageOpenGraph({
+      path: "/blogs",
+      title: "Stories",
+      description: DESCRIPTION,
+      image: settings?.heroImageUrl,
+      imageAlt: settings?.heroImageAlt,
+    }),
+  };
+}
 
 export const revalidate = 60;
 
@@ -35,6 +45,7 @@ export default async function BlogsPage() {
         url: absoluteUrl(`/blogs/${a.slug || a.id}`),
         headline: a.title,
         datePublished: a.createdAt,
+        dateModified: a.updatedAt,
         ...(a.coverUrl && { image: a.coverUrl }),
       })),
     },

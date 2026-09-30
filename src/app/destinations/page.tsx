@@ -1,23 +1,33 @@
 import type { Metadata } from "next";
+import { getSiteSettings } from "@/data/site";
 import Image from "next/image";
 import { PageHeading } from "@/components/page-heading";
 import { Stars } from "@/components/stars";
 import { JsonLd } from "@/components/json-ld";
 import { getDestinations, type Destination } from "@/data/destinations";
 import { PageBreadcrumb } from "@/components/page-breadcrumb";
-import { ORGANIZATION_ID, absoluteUrl } from "@/lib/seo";
+import { ORGANIZATION_ID, absoluteUrl, pageOpenGraph, pageAlternates } from "@/lib/seo";
 
 export const revalidate = 60;
 
 const DESCRIPTION =
   "Photography and wildlife destinations we guide across India — with stay details, guest capacity and nightly prices for each.";
 
-export const metadata: Metadata = {
-  title: "Destinations",
-  description: DESCRIPTION,
-  alternates: { canonical: "/destinations" },
-  openGraph: { url: "/destinations", title: "Destinations", description: DESCRIPTION },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSiteSettings();
+  return {
+    title: "Destinations",
+    description: DESCRIPTION,
+    alternates: pageAlternates("/destinations"),
+    openGraph: pageOpenGraph({
+      path: "/destinations",
+      title: "Destinations",
+      description: DESCRIPTION,
+      image: settings?.heroImageUrl,
+      imageAlt: settings?.heroImageAlt,
+    }),
+  };
+}
 
 const priceFormat = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -91,12 +101,18 @@ export default async function DestinationsPage() {
         itemListElement: destinations.map((d, i) => ({
           "@type": "ListItem",
           position: i + 1,
+          // A guided trip to the destination: TouristTrip can carry the offer, a Place can't.
           item: {
-            "@type": "TouristDestination",
+            "@type": "TouristTrip",
             name: d.name,
             ...(d.description && { description: d.description }),
             ...(d.imageUrl && { image: d.imageUrl }),
-            ...(d.location && { address: d.location }),
+            provider: { "@id": ORGANIZATION_ID },
+            itinerary: {
+              "@type": "TouristDestination",
+              name: d.name,
+              ...(d.location && { address: d.location }),
+            },
             ...(d.pricePerNight != null && {
               offers: {
                 "@type": "Offer",
